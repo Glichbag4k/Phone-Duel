@@ -506,3 +506,405 @@ function updateBotStats() {
     const possibleCount = gameState.bot.possiblePhones.length;
     const probability = possibleCount > 0 ? Math.round((1 / possibleCount) * 100) : 0;
     
+    document.getElementById('botKnownCount').textContent = knownCount;
+    document.getElementById('botPossibleCount').textContent = possibleCount;
+    document.getElementById('botProbability').textContent = `${probability}%`;
+    
+    updateBotPhoneDisplay();
+}
+
+function updateBotPhoneDisplay() {
+    const details = document.getElementById('botPhoneDetails');
+    let html = '';
+    
+    for (const [attr, value] of Object.entries(gameState.bot.knownAttributes)) {
+        html += `<div><strong>${attributes[attr]}:</strong> ${value}</div>`;
+    }
+    
+    if (!html) {
+        html = '<div style="color: #8888ff; font-style: italic;">Еще не раскрыто</div>';
+    }
+    
+    details.innerHTML = html;
+}
+
+function createAttributeButtons() {
+    const container = document.getElementById('playerAttributes');
+    container.innerHTML = '';
+    
+    Object.entries(attributes).forEach(([attr, name]) => {
+        const button = document.createElement('button');
+        button.className = 'attr-btn';
+        button.dataset.attr = attr;
+        button.textContent = name;
+        
+        if (gameState.player.usedAttributes.has(attr)) {
+            button.classList.add('used');
+            button.disabled = true;
+        }
+        
+        button.addEventListener('click', () => askBotAttribute(attr));
+        container.appendChild(button);
+    });
+}
+
+function askBotAttribute(attr) {
+    if (!gameState.gameActive || gameState.currentTurn !== 'player') return;
+    
+    gameState.player.usedAttributes.add(attr);
+    
+    const value = gameState.bot.phone[attr];
+    gameState.player.knownAttributes[attr] = value;
+    
+    document.querySelector(`[data-attr="${attr}"]`).classList.add('used');
+    document.querySelector(`[data-attr="${attr}"]`).disabled = true;
+    
+    addToLog(`Вы узнали ${attributes[attr]} бота: ${value}`);
+    
+    if (Object.keys(gameState.player.knownAttributes).length >= 3) {
+        document.getElementById('playerGuessBtn').disabled = false;
+    }
+    
+    updateBotStats();
+    
+    setPlayerTurn(false);
+    document.getElementById('turnIndicator').textContent = 'Ход бота...';
+    
+    setTimeout(botTurn, 1500);
+}
+
+function botTurn() {
+    if (!gameState.gameActive) return;
+    
+    let chosenAttr;
+    const availableAttrs = Object.keys(attributes).filter(a => !gameState.bot.usedAttributes.has(a));
+    
+    if (availableAttrs.length === 0) return;
+    
+    switch(gameState.bot.difficulty) {
+        case 'easy':
+            chosenAttr = availableAttrs[Math.floor(Math.random() * availableAttrs.length)];
+            break;
+        case 'medium':
+            const importantAttrs = ['processor', 'os', 'brand', 'price', 'camera'];
+            const importantAvailable = availableAttrs.filter(a => importantAttrs.includes(a));
+            chosenAttr = importantAvailable.length > 0 ? 
+                importantAvailable[Math.floor(Math.random() * importantAvailable.length)] :
+                availableAttrs[Math.floor(Math.random() * availableAttrs.length)];
+            break;
+        case 'hard':
+            chosenAttr = getSmartBotAttribute();
+            break;
+        default:
+            chosenAttr = availableAttrs[Math.floor(Math.random() * availableAttrs.length)];
+    }
+    
+    gameState.bot.usedAttributes.add(chosenAttr);
+    
+    const value = gameState.player.phone[chosenAttr];
+    gameState.bot.knownAttributes[chosenAttr] = value;
+    
+    gameState.bot.possiblePhones = gameState.bot.possiblePhones.filter(phone => phone[chosenAttr] === value);
+    
+    addToLog(`Бот спрашивает ${attributes[chosenAttr]}: ${value}`, 'bot');
+    addToLog(`У бота осталось ${gameState.bot.possiblePhones.length} возможных телефонов`, 'bot');
+    
+    updateBotStats();
+    
+    if (gameState.bot.possiblePhones.length === 1) {
+        setTimeout(() => botMakeGuess(), 1000);
+    } else if (gameState.bot.possiblePhones.length <= 3 && Math.random() > 0.7) {
+        setTimeout(() => botMakeGuess(), 1000);
+    } else {
+        gameState.round++;
+        if (gameState.round > gameState.maxRounds) {
+            endGameByRounds();
+        } else {
+            setPlayerTurn(true);
+        }
+    }
+}
+
+function getSmartBotAttribute() {
+    const availableAttrs = Object.keys(attributes).filter(a => !gameState.bot.usedAttributes.has(a));
+    
+    if (gameState.bot.possiblePhones.length <= 5) {
+        return availableAttrs[Math.floor(Math.random() * availableAttrs.length)];
+    }
+    
+    let bestAttr = availableAttrs[0];
+    let bestScore = 0;
+    
+    for (const attr of availableAttrs) {
+        const values = {};
+        gameState.bot.possiblePhones.forEach(phone => {
+            const value = phone[attr];
+            values[value] = (values[value] || 0) + 1;
+        });
+        
+        const score = Object.values(values).reduce((sum, count) => {
+            return sum + Math.abs(count - gameState.bot.possiblePhones.length / Object.keys(values).length);
+        }, 0);
+        
+        if (score > bestScore) {
+            bestScore = score;
+            bestAttr = attr;
+        }
+    }
+    
+    return bestAttr;
+}
+
+function botMakeGuess() {
+    if (!gameState.gameActive) return;
+    
+    let guess;
+    if (gameState.bot.possiblePhones.length === 1) {
+        guess = gameState.bot.possiblePhones[0];
+    } else {
+        guess = gameState.bot.possiblePhones[Math.floor(Math.random() * gameState.bot.possiblePhones.length)];
+    }
+    
+    if (guess.name === gameState.player.phone.name) {
+        gameState.gameActive = false;
+        addToLog(`Бот угадал ваш телефон: ${guess.name}!`, 'bot');
+        showResult(false);
+    } else {
+        addToLog(`Бот пытался угадать: ${guess.name} (неправильно!)`, 'bot');
+        gameState.bot.possiblePhones = gameState.bot.possiblePhones.filter(phone => phone.name !== guess.name);
+        updateBotStats();
+        gameState.round++;
+        if (gameState.round > gameState.maxRounds) {
+            endGameByRounds();
+        } else {
+            setPlayerTurn(true);
+        }
+    }
+}
+
+function setPlayerTurn(isPlayerTurn) {
+    gameState.currentTurn = isPlayerTurn ? 'player' : 'bot';
+    gameState.player.isActive = isPlayerTurn;
+    
+    const indicator = document.getElementById('turnIndicator');
+    const nextBtn = document.getElementById('nextTurnBtn');
+    
+    if (isPlayerTurn) {
+        indicator.textContent = 'Ваш ход!';
+        indicator.style.borderColor = 'var(--accent)';
+        nextBtn.disabled = true;
+        document.querySelectorAll('.attr-btn:not(.used)').forEach(btn => { btn.disabled = false; });
+    } else {
+        indicator.textContent = 'Ход бота...';
+        indicator.style.borderColor = '#8a2be2';
+        nextBtn.disabled = true;
+        document.querySelectorAll('.attr-btn').forEach(btn => { btn.disabled = true; });
+        document.getElementById('playerGuessBtn').disabled = true;
+    }
+    
+    document.getElementById('playerTurnStatus').textContent = isPlayerTurn ? 'ХОДИТ' : 'ОЖИДАЕТ';
+}
+
+function updateTurnIndicator() {
+    const indicator = document.getElementById('turnIndicator');
+    indicator.textContent = gameState.currentTurn === 'player' ? 'Ваш ход!' : 'Ход бота...';
+    indicator.style.borderColor = gameState.currentTurn === 'player' ? 'var(--accent)' : '#8a2be2';
+}
+
+function setupEventListeners() {
+    document.getElementById('playerGuessBtn').addEventListener('click', playerMakeGuess);
+    setupAutocomplete('playerGuess');
+    document.getElementById('nextTurnBtn').addEventListener('click', () => {
+        if (gameState.currentTurn === 'player') {
+            setPlayerTurn(false);
+            setTimeout(botTurn, 500);
+        }
+    });
+    document.getElementById('playerGuess').addEventListener('keypress', (e) => {
+        if (e.key === 'Enter') playerMakeGuess();
+    });
+}
+
+function setupAutocomplete(inputId) {
+    const input = document.getElementById(inputId);
+    const suggestions = document.getElementById('playerSuggestions');
+    
+    input.addEventListener('input', function() {
+        const query = this.value.toLowerCase();
+        suggestions.innerHTML = '';
+        
+        if (query.length < 2) {
+            suggestions.style.display = 'none';
+            return;
+        }
+        
+        const matches = phones.filter(phone => phone.name.toLowerCase().includes(query)).slice(0, 5);
+        
+        if (matches.length > 0) {
+            matches.forEach(phone => {
+                const item = document.createElement('div');
+                item.className = 'suggestion-item';
+                item.textContent = phone.name;
+                item.addEventListener('click', () => {
+                    input.value = phone.name;
+                    suggestions.style.display = 'none';
+                });
+                suggestions.appendChild(item);
+            });
+            suggestions.style.display = 'block';
+        } else {
+            suggestions.style.display = 'none';
+        }
+    });
+    
+    document.addEventListener('click', (e) => {
+        if (!input.contains(e.target) && !suggestions.contains(e.target)) {
+            suggestions.style.display = 'none';
+        }
+    });
+}
+
+function playerMakeGuess() {
+    if (!gameState.gameActive || gameState.currentTurn !== 'player') return;
+    
+    const input = document.getElementById('playerGuess');
+    const guess = input.value.trim();
+    
+    if (!guess) {
+        addToLog('Введите название телефона!');
+        return;
+    }
+    
+    const guessedPhone = phones.find(p => p.name.toLowerCase() === guess.toLowerCase());
+    
+    if (!guessedPhone) {
+        addToLog(`Телефон "${guess}" не найден!`);
+        return;
+    }
+    
+    if (guessedPhone.name === gameState.bot.phone.name) {
+        gameState.gameActive = false;
+        addToLog(`Вы угадали телефон бота: ${guessedPhone.name}!`);
+        showResult(true);
+    } else {
+        addToLog(`Неправильно! Это не ${guessedPhone.name}.`);
+        input.value = '';
+        input.focus();
+        setPlayerTurn(false);
+        setTimeout(botTurn, 1500);
+    }
+}
+
+function endGameByRounds() {
+    gameState.gameActive = false;
+    addToLog(`Лимит раундов исчерпан!`);
+    
+    const playerKnown = Object.keys(gameState.player.knownAttributes).length;
+    const botKnown = Object.keys(gameState.bot.knownAttributes).length;
+    
+    if (playerKnown > botKnown) {
+        showResult(true, 'rounds');
+    } else if (botKnown > playerKnown) {
+        showResult(false, 'rounds');
+    } else {
+        showResult(null, 'draw');
+    }
+}
+
+function showResult(isWin, reason = 'guess') {
+    const modal = document.getElementById('resultModal');
+    const title = document.getElementById('resultTitle');
+    const message = document.getElementById('resultMessage');
+    const analysis = document.getElementById('botAnalysis');
+    
+    if (isWin === true) {
+        title.textContent = 'ПОБЕДА!';
+        message.innerHTML = `
+            <p>Поздравляем, ${gameState.player.name}!</p>
+            <p>Вы угадали телефон бота: <strong>${gameState.bot.phone.name}</strong></p>
+            <p>Раундов: <strong>${gameState.round}</strong></p>
+            <p>Известных характеристик: <strong>${Object.keys(gameState.player.knownAttributes).length}</strong></p>
+        `;
+        updateRecord(true);
+    } else if (isWin === false) {
+        title.textContent = 'БОТ ПОБЕДИЛ';
+        message.innerHTML = `
+            <p>Бот угадал ваш телефон: <strong>${gameState.player.phone.name}</strong></p>
+            <p>Раундов: <strong>${gameState.round}</strong></p>
+            <p>Возможных телефонов: <strong>${gameState.bot.possiblePhones.length}</strong></p>
+        `;
+    } else {
+        title.textContent = 'НИЧЬЯ';
+        message.innerHTML = `<p>Лимит раундов исчерпан!</p><p>Никто не смог угадать телефон.</p>`;
+    }
+    
+    analysis.innerHTML = `
+        <strong>Анализ:</strong><br>
+        • Ваш телефон: ${gameState.player.phone.name}<br>
+        • Телефон бота: ${gameState.bot.phone.name}<br>
+        • Известных характеристик: Вы - ${Object.keys(gameState.player.knownAttributes).length}, Бот - ${Object.keys(gameState.bot.knownAttributes).length}<br>
+        • Сложность: ${gameState.bot.difficulty}<br>
+        • Раундов: ${gameState.round}
+    `;
+    
+    modal.style.display = 'flex';
+}
+
+function updateRecord(isWin) {
+    if (isWin) {
+        let wins = parseInt(localStorage.getItem('botWins') || '0');
+        wins++;
+        localStorage.setItem('botWins', wins);
+    }
+}
+
+function addToLog(message, type = 'player') {
+    const log = document.getElementById('gameLog');
+    const item = document.createElement('div');
+    item.className = `log-item ${type}`;
+    const time = new Date().toLocaleTimeString([], {hour: '2-digit', minute:'2-digit'});
+    const prefix = type === 'bot' ? '🤖' : '👤';
+    item.textContent = `[${time}] ${prefix} ${message}`;
+    log.appendChild(item);
+    log.scrollTop = log.scrollHeight;
+}
+
+function restartGame() {
+    document.getElementById('resultModal').style.display = 'none';
+    document.getElementById('playerGuess').value = '';
+    document.getElementById('gameLog').innerHTML = '';
+    startNewGame();
+}
+
+function setupMusic() {
+    const music = document.getElementById('bgMusic');
+    const toggleBtn = document.getElementById('musicToggle');
+    let musicEnabled = localStorage.getItem('musicEnabled') !== 'false';
+    
+    if (musicEnabled) {
+        music.play().catch(() => {
+            musicEnabled = false;
+            toggleBtn.textContent = "Музыка: OFF";
+        });
+        toggleBtn.textContent = "Музыка: ON";
+    } else {
+        music.pause();
+        toggleBtn.textContent = "Музыка: OFF";
+    }
+    
+    toggleBtn.addEventListener('click', () => {
+        if(musicEnabled) {
+            music.pause();
+            toggleBtn.textContent = "Музыка: OFF";
+            musicEnabled = false;
+        } else {
+            music.play();
+            toggleBtn.textContent = "Музыка: ON";
+            musicEnabled = true;
+        }
+        localStorage.setItem('musicEnabled', musicEnabled);
+    });
+}
+</script>
+</body>
+</html>
