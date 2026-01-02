@@ -1,0 +1,128 @@
+@import url('https://fonts.googleapis.com/css2?family=Share+Tech+Mono&family=Orbitron:wght@400;700;900&display=swap');
+
+:root {
+    --bg-primary: #0d0d18;
+    --bg-secondary: #101026;
+    --accent: #08f0ff;
+    --accent-light: #08f0ff33;
+    --accent-secondary: #ff0878;
+    --text-primary: #ffffff;
+    --text-secondary: #a0a0ff;
+    --card-bg: rgba(16, 16, 38, 0.9);
+    --success: #0ff8d1;
+    --warning: #ff8c00;
+    --danger: #ff4444;
+}
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: 'Share Tech Mono', monospace;
+    background: linear-gradient(135deg, #05050d, #0a0a18, #0f0f23);
+    color: var(--text-primary);
+    min-height: 100vh;
+    overflow-x: hidden;
+    padding: 20px;
+}
+
+.container {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 20px;
+}
+
+h1 {
+    font-family: 'Orbitron', sans-serif;
+    font-size: 42px;
+    text-align: center;
+    margin-bottom: 10px;
+    background: linear-gradient(90deg, var(--accent), var(--accent-secondary));
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    text-shadow: 0 0 30px rgba(8, 240, 255, 0.5);
+    letter-spacing: 2px;
+}
+
+.subtitle {
+    text-align: center;
+    color: var(--text-secondary);
+    margin-bottom: 40px;
+    font-size: 18px;
+}
+
+.btn-start {
+    background: linear-gradient(90deg, var(--accent), var(--success));
+    color: black;
+    border: none;
+    padding: 15px 30px;
+    border-radius: 10px;
+    font-family: 'Orbitron', sans-serif;
+    font-weight: bold;
+    font-size: 18px;
+    cursor: pointer;
+    transition: all 0.3s;
+    width: 100%;
+    margin-top: 20px;
+}
+
+.btn-start:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 10px 25px rgba(8, 240, 255, 0.4);
+}
+
+.music-btn {
+    position: fixed;
+    bottom: 20px;
+    right: 20px;
+    background: var(--card-bg);
+    border: 1px solid var(--accent);
+    border-radius: 8px;
+    padding: 10px 15px;
+    color: white;
+    cursor: pointer;
+    font-family: 'Share Tech Mono', monospace;
+    z-index: 1000;
+}
+
+.music-btn:hover {
+    background: rgba(8, 240, 255, 0.2);
+}
+
+@keyframes pulse {
+    0%, 100% { opacity: 1; }
+    50% { opacity: 0.7; }
+}
+
+@keyframes glow {
+    0%, 100% { box-shadow: 0 0 10px var(--accent); }
+    50% { box-shadow: 0 0 20px var(--accent); }
+}
+
+@keyframes slideIn {
+    from { transform: translateY(20px); opacity: 0; }
+    to { transform: translateY(0); opacity: 1; }
+}
+
+@media (max-width: 768px) {
+    h1 {
+        font-size: 32px;
+    }
+    .container {
+        padding: 10px;
+    }
+    .mode-selector {
+        margin: 20px auto;
+    }
+    .players {
+        flex-direction: column;
+        align-items: center;
+    }
+    .player-input {
+        width: 100%;
+        max-width: 300px;
+    }
+}

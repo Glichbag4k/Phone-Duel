@@ -1,0 +1,1176 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Phone Duel — Локальная дуэль</title>
+<link rel="stylesheet" href="style.css">
+<style>
+.game-container {
+    max-width: 1200px;
+    margin: 0 auto;
+}
+.turn-banner {
+    text-align: center;
+    font-size: 24px;
+    color: var(--accent);
+    margin: 30px 0;
+    padding: 20px;
+    background: rgba(8, 240, 255, 0.1);
+    border-radius: 15px;
+    border: 2px solid var(--accent);
+    animation: pulse 2s infinite;
+}
+.player-info-card {
+    display: flex;
+    align-items: center;
+    gap: 30px;
+    background: var(--card-bg);
+    border-radius: 20px;
+    padding: 30px;
+    margin-bottom: 30px;
+    border: 2px solid var(--accent-light);
+}
+.player-avatar {
+    font-size: 60px;
+    width: 100px;
+    text-align: center;
+}
+.player-details {
+    flex: 1;
+}
+.player-name {
+    font-size: 28px;
+    color: var(--accent);
+    margin-bottom: 10px;
+    font-family: 'Orbitron', sans-serif;
+}
+.player-stats {
+    display: flex;
+    gap: 30px;
+    margin-top: 15px;
+}
+.stat-box {
+    background: rgba(16, 16, 38, 0.6);
+    border-radius: 10px;
+    padding: 10px 20px;
+    text-align: center;
+    border: 1px solid var(--accent-light);
+}
+.stat-value {
+    font-size: 24px;
+    color: var(--accent);
+    font-weight: bold;
+}
+.stat-label {
+    font-size: 12px;
+    color: var(--text-secondary);
+    margin-top: 5px;
+}
+.phone-info-compact {
+    background: rgba(0, 0, 0, 0.3);
+    border-radius: 15px;
+    padding: 20px;
+    margin-top: 20px;
+    border: 1px solid var(--accent-light);
+}
+.compact-phone-name {
+    color: var(--success);
+    font-size: 18px;
+    margin-bottom: 10px;
+    text-align: center;
+}
+.compact-details {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: 10px;
+    font-size: 14px;
+    color: var(--text-secondary);
+}
+.action-buttons {
+    display: flex;
+    gap: 20px;
+    justify-content: center;
+    margin-top: 40px;
+}
+.action-btn {
+    padding: 20px 40px;
+    border-radius: 15px;
+    border: none;
+    font-family: 'Orbitron', sans-serif;
+    font-size: 18px;
+    font-weight: bold;
+    cursor: pointer;
+    transition: all 0.3s;
+    min-width: 200px;
+}
+.btn-ask {
+    background: linear-gradient(90deg, var(--accent), var(--success));
+    color: black;
+}
+.btn-guess {
+    background: linear-gradient(90deg, #ff0878, #ff8c00);
+    color: white;
+}
+.btn-skip {
+    background: linear-gradient(90deg, #666, #999);
+    color: white;
+}
+.action-btn:hover:not(:disabled) {
+    transform: translateY(-5px);
+    box-shadow: 0 15px 30px rgba(0, 0, 0, 0.4);
+}
+.action-btn:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+    transform: none;
+}
+.fullscreen-modal {
+    display: none;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.95);
+    z-index: 10000;
+    overflow-y: auto;
+    padding: 20px;
+}
+.modal-header {
+    text-align: center;
+    margin-bottom: 30px;
+    padding-bottom: 20px;
+    border-bottom: 2px solid var(--accent);
+}
+.modal-title {
+    font-size: 36px;
+    color: var(--accent);
+    margin-bottom: 10px;
+    text-shadow: 0 0 20px currentColor;
+}
+.modal-subtitle {
+    color: var(--text-secondary);
+    font-size: 18px;
+}
+.attributes-grid-modal {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+    gap: 20px;
+    max-width: 1000px;
+    margin: 0 auto 40px;
+}
+.attr-card {
+    background: var(--card-bg);
+    border: 2px solid var(--accent-light);
+    border-radius: 15px;
+    padding: 25px;
+    cursor: pointer;
+    transition: all 0.3s;
+    text-align: center;
+}
+.attr-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 10px 25px rgba(8, 240, 255, 0.3);
+    border-color: var(--accent);
+}
+.attr-card.used {
+    background: rgba(138, 43, 226, 0.2);
+    border-color: #8a2be2;
+    cursor: not-allowed;
+    opacity: 0.7;
+}
+.attr-icon {
+    font-size: 32px;
+    margin-bottom: 15px;
+}
+.attr-name {
+    font-size: 18px;
+    color: var(--accent);
+    margin-bottom: 10px;
+}
+.attr-desc {
+    font-size: 14px;
+    color: var(--text-secondary);
+    min-height: 40px;
+}
+.guess-modal-content {
+    max-width: 800px;
+    margin: 0 auto;
+}
+.guess-input-modal {
+    width: 100%;
+    padding: 20px;
+    background: rgba(16, 16, 38, 0.8);
+    border: 2px solid var(--accent);
+    border-radius: 15px;
+    color: white;
+    font-size: 20px;
+    margin: 30px 0;
+    font-family: 'Share Tech Mono', monospace;
+    text-align: center;
+}
+.suggestions-modal {
+    max-height: 300px;
+    overflow-y: auto;
+    background: rgba(16, 16, 38, 0.9);
+    border-radius: 10px;
+    margin-bottom: 30px;
+    border: 1px solid var(--accent-light);
+}
+.suggestion-item-modal {
+    padding: 15px;
+    cursor: pointer;
+    transition: all 0.2s;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+}
+.suggestion-item-modal:hover {
+    background: rgba(8, 240, 255, 0.2);
+}
+.modal-buttons {
+    display: flex;
+    gap: 20px;
+    justify-content: center;
+    margin-top: 30px;
+}
+.revealed-info {
+    background: rgba(8, 240, 255, 0.1);
+    border-radius: 15px;
+    padding: 25px;
+    margin: 30px auto;
+    max-width: 800px;
+    border: 2px solid var(--accent);
+}
+.revealed-title {
+    color: var(--accent);
+    font-size: 20px;
+    margin-bottom: 20px;
+    text-align: center;
+}
+.revealed-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    gap: 15px;
+}
+.revealed-item {
+    background: rgba(0, 0, 0, 0.3);
+    border-radius: 10px;
+    padding: 15px;
+    border: 1px solid var(--accent-light);
+}
+.revealed-attr {
+    color: var(--success);
+    font-weight: bold;
+    margin-bottom: 5px;
+}
+.revealed-value {
+    color: white;
+    font-size: 16px;
+}
+.close-modal-btn {
+    position: fixed;
+    top: 20px;
+    right: 20px;
+    background: rgba(255, 255, 255, 0.1);
+    border: 2px solid var(--accent);
+    border-radius: 50%;
+    width: 60px;
+    height: 60px;
+    color: var(--accent);
+    font-size: 24px;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 10001;
+}
+.close-modal-btn:hover {
+    background: var(--accent);
+    color: black;
+    transform: rotate(90deg);
+}
+.result-reveal {
+    text-align: center;
+    padding: 40px;
+    background: rgba(0, 0, 0, 0.5);
+    border-radius: 20px;
+    margin: 30px auto;
+    max-width: 600px;
+    border: 3px solid var(--accent);
+    animation: glow 2s infinite;
+}
+.result-phone-name {
+    font-size: 32px;
+    color: var(--success);
+    margin: 20px 0;
+}
+.result-stats {
+    display: flex;
+    justify-content: center;
+    gap: 40px;
+    margin-top: 30px;
+}
+.result-stat {
+    text-align: center;
+}
+.result-value {
+    font-size: 28px;
+    color: var(--accent);
+    font-weight: bold;
+}
+.result-label {
+    color: var(--text-secondary);
+    font-size: 14px;
+    margin-top: 5px;
+}
+.game-history {
+    background: rgba(10, 10, 24, 0.9);
+    border-radius: 20px;
+    padding: 25px;
+    margin-top: 40px;
+    border: 1px solid var(--accent-light);
+}
+.history-title {
+    color: var(--accent);
+    font-size: 20px;
+    margin-bottom: 20px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+.history-list {
+    max-height: 300px;
+    overflow-y: auto;
+}
+.history-item {
+    padding: 15px;
+    margin-bottom: 10px;
+    background: rgba(16, 16, 38, 0.5);
+    border-radius: 10px;
+    border-left: 4px solid var(--accent);
+}
+.history-item.bot {
+    border-left-color: #8a2be2;
+}
+.history-time {
+    color: #8888ff;
+    font-size: 12px;
+    margin-bottom: 5px;
+}
+.history-text {
+    color: white;
+    font-size: 14px;
+}
+@media (max-width: 768px) {
+    .player-info-card {
+        flex-direction: column;
+        text-align: center;
+        gap: 20px;
+    }
+    .player-stats {
+        flex-wrap: wrap;
+        justify-content: center;
+    }
+    .action-buttons {
+        flex-direction: column;
+        align-items: center;
+    }
+    .action-btn {
+        width: 100%;
+        max-width: 300px;
+    }
+    .attributes-grid-modal {
+        grid-template-columns: 1fr;
+    }
+    .revealed-grid {
+        grid-template-columns: 1fr;
+    }
+}
+</style>
+</head>
+<body>
+<button class="back-btn" onclick="window.location.href='index.html'">← Назад</button>
+
+<div class="container game-container">
+    <h1>🎮 Локальная Дуэль</h1>
+    
+    <div class="turn-banner" id="turnBanner"></div>
+    
+    <div class="player-info-card">
+        <div class="player-avatar" id="currentPlayerAvatar">👤</div>
+        <div class="player-details">
+            <div class="player-name" id="currentPlayerNameDisplay">Игрок 1</div>
+            <div style="color: var(--text-secondary); margin-bottom: 10px;">
+                Телефон соперника: <span id="opponentPhoneName">???</span>
+            </div>
+            
+            <div class="player-stats">
+                <div class="stat-box">
+                    <div class="stat-value" id="knownAttributes">0</div>
+                    <div class="stat-label">Известных характеристик</div>
+                </div>
+                <div class="stat-box">
+                    <div class="stat-value" id="roundCounter">1</div>
+                    <div class="stat-label">Раунд</div>
+                </div>
+                <div class="stat-box">
+                    <div class="stat-value" id="possiblePhones">24</div>
+                    <div class="stat-label">Возможных телефонов</div>
+                </div>
+            </div>
+            
+            <div class="phone-info-compact">
+                <div class="compact-phone-name">Ваш телефон: <span id="ownPhoneName">???</span></div>
+                <div class="compact-details" id="ownPhoneDetails"></div>
+            </div>
+        </div>
+    </div>
+    
+    <div class="action-buttons">
+        <button class="action-btn btn-ask" onclick="openAskModal()">📋 СПРОСИТЬ ХАРАКТЕРИСТИКУ</button>
+        <button class="action-btn btn-guess" onclick="openGuessModal()">🎯 УГАДАТЬ ТЕЛЕФОН</button>
+        <button class="action-btn btn-skip" onclick="skipTurn()" id="skipBtn">⏭️ ПРОПУСТИТЬ ХОД</button>
+    </div>
+    
+    <div class="game-history">
+        <div class="history-title">
+            <span>📜 История ходов</span>
+            <span style="color: var(--text-secondary); font-size: 14px;" id="gameStatus">Играется</span>
+        </div>
+        <div class="history-list" id="gameHistory"></div>
+    </div>
+</div>
+
+<div class="fullscreen-modal" id="askModal">
+    <button class="close-modal-btn" onclick="closeAskModal()">✕</button>
+    <div class="modal-header">
+        <div class="modal-title">📋 Выбор характеристики</div>
+        <div class="modal-subtitle" id="askModalSubtitle">Выберите характеристику, которую хотите узнать у соперника</div>
+    </div>
+    
+    <div class="revealed-info" id="alreadyRevealed">
+        <div class="revealed-title">Уже известные характеристики:</div>
+        <div class="revealed-grid" id="revealedGrid"></div>
+    </div>
+    
+    <div class="attributes-grid-modal" id="attributesGrid"></div>
+    
+    <div style="text-align: center; margin-top: 30px;">
+        <button class="action-btn btn-skip" onclick="closeAskModal()" style="min-width: 300px;">
+            ← НАЗАД К ИГРЕ
+        </button>
+    </div>
+</div>
+
+<div class="fullscreen-modal" id="guessModal">
+    <button class="close-modal-btn" onclick="closeGuessModal()">✕</button>
+    <div class="modal-header">
+        <div class="modal-title">🎯 Угадайте телефон соперника</div>
+        <div class="modal-subtitle">Введите название телефона. Используйте автодополнение для подсказок.</div>
+    </div>
+    
+    <div class="guess-modal-content">
+        <input type="text" class="guess-input-modal" id="guessInputModal" 
+               placeholder="Начните вводить название телефона..." autocomplete="off">
+        
+        <div class="suggestions-modal" id="suggestionsModal"></div>
+        
+        <div class="revealed-info">
+            <div class="revealed-title">Известные характеристики телефона соперника:</div>
+            <div class="revealed-grid" id="guessRevealedGrid"></div>
+        </div>
+        
+        <div class="modal-buttons">
+            <button class="action-btn btn-guess" onclick="submitGuess()" id="submitGuessBtn" style="min-width: 250px;">
+                ✅ ПОДТВЕРДИТЬ УГАДЫВАНИЕ
+            </button>
+            <button class="action-btn btn-skip" onclick="closeGuessModal()" style="min-width: 250px;">
+                ❌ ОТМЕНА
+            </button>
+        </div>
+    </div>
+</div>
+
+<div class="fullscreen-modal" id="resultModal">
+    <div class="result-reveal">
+        <div class="modal-title" id="resultTitle">Характеристика раскрыта!</div>
+        <div class="modal-subtitle" id="resultSubtitle"></div>
+        
+        <div style="font-size: 48px; margin: 30px 0;">🎉</div>
+        
+        <div class="result-phone-name" id="resultPhoneName"></div>
+        
+        <div class="result-stats">
+            <div class="result-stat">
+                <div class="result-value" id="resultAttribute"></div>
+                <div class="result-label">Раскрытая характеристика</div>
+            </div>
+            <div class="result-stat">
+                <div class="result-value" id="resultKnownCount"></div>
+                <div class="result-label">Стало известно всего</div>
+            </div>
+            <div class="result-stat">
+                <div class="result-value" id="resultPossibleCount"></div>
+                <div class="result-label">Осталось возможных</div>
+            </div>
+        </div>
+        
+        <button class="action-btn btn-ask" onclick="closeResultModal()" style="margin-top: 40px; min-width: 300px;">
+            ПРОДОЛЖИТЬ ИГРУ →
+        </button>
+    </div>
+</div>
+
+<div class="fullscreen-modal" id="endGameModal">
+    <div class="result-reveal" style="max-width: 800px;">
+        <div class="modal-title" id="endGameTitle">ИГРА ОКОНЧЕНА!</div>
+        <div style="font-size: 64px; margin: 30px 0;" id="endGameIcon">🏆</div>
+        
+        <div class="result-phone-name" id="endGameMessage"></div>
+        
+        <div class="revealed-info" style="margin: 30px 0;">
+            <div class="revealed-title">Телефоны игроков:</div>
+            <div class="revealed-grid">
+                <div class="revealed-item">
+                    <div class="revealed-attr" id="player1EndName">Игрок 1</div>
+                    <div class="revealed-value" id="player1EndPhone">???</div>
+                </div>
+                <div class="revealed-item">
+                    <div class="revealed-attr" id="player2EndName">Игрок 2</div>
+                    <div class="revealed-value" id="player2EndPhone">???</div>
+                </div>
+            </div>
+        </div>
+        
+        <div class="result-stats">
+            <div class="result-stat">
+                <div class="result-value" id="endGameRounds"></div>
+                <div class="result-label">Сыграно раундов</div>
+            </div>
+            <div class="result-stat">
+                <div class="result-value" id="endGameTime"></div>
+                <div class="result-label">Время игры</div>
+            </div>
+            <div class="result-stat">
+                <div class="result-value" id="endGameRevealed"></div>
+                <div class="result-label">Раскрыто характеристик</div>
+            </div>
+        </div>
+        
+        <div class="modal-buttons" style="margin-top: 40px;">
+            <button class="action-btn btn-ask" onclick="restartGame()" style="min-width: 250px;">
+                🔄 НОВАЯ ИГРА
+            </button>
+            <button class="action-btn btn-skip" onclick="window.location.href='index.html'" style="min-width: 250px;">
+                🏠 В МЕНЮ
+            </button>
+        </div>
+    </div>
+</div>
+
+<audio id="bgMusic" loop>
+    <source src="cyberpunk_music.mp3" type="audio/mpeg">
+</audio>
+<button id="musicToggle" class="music-btn">Музыка: ON</button>
+
+<script>
+let gameState = {
+    player1: {
+        name: 'Игрок 1',
+        phone: null,
+        usedAttributes: new Set(),
+        knownAttributes: {},
+        possiblePhones: [],
+        isActive: true
+    },
+    player2: {
+        name: 'Игрок 2',
+        phone: null,
+        usedAttributes: new Set(),
+        knownAttributes: {},
+        possiblePhones: [],
+        isActive: false
+    },
+    currentPlayer: 1,
+    round: 1,
+    maxRounds: 15,
+    gameActive: true,
+    startTime: null,
+    history: []
+};
+
+const attributes = {
+    battery: "🔋 Аккумулятор",
+    materials: "🧱 Материалы",
+    processor: "⚙ Процессор",
+    camera: "📸 Камера",
+    screen: "🖥 Экран",
+    charging: "⚡ Зарядка",
+    price: "💲 Цена",
+    storage: "💾 Память",
+    os: "🔷 ОС",
+    weight: "⚖️ Вес"
+};
+
+document.addEventListener('DOMContentLoaded', () => {
+    gameState.player1.name = localStorage.getItem('player1Name') || 'Игрок 1';
+    gameState.player2.name = localStorage.getItem('player2Name') || 'Игрок 2';
+    
+    startNewGame();
+    setupMusic();
+    
+    gameState.startTime = new Date();
+    setInterval(updateGameTime, 1000);
+});
+
+function startNewGame() {
+    gameState = {
+        player1: {
+            name: gameState.player1.name,
+            phone: null,
+            usedAttributes: new Set(),
+            knownAttributes: {},
+            possiblePhones: [...phones],
+            isActive: true
+        },
+        player2: {
+            name: gameState.player2.name,
+            phone: null,
+            usedAttributes: new Set(),
+            knownAttributes: {},
+            possiblePhones: [...phones],
+            isActive: false
+        },
+        currentPlayer: 1,
+        round: 1,
+        maxRounds: 15,
+        gameActive: true,
+        startTime: new Date(),
+        history: []
+    };
+    
+    gameState.player1.phone = getRandomPhone();
+    do {
+        gameState.player2.phone = getRandomPhone();
+    } while (gameState.player2.phone.name === gameState.player1.phone.name);
+    
+    updateGameInterface();
+    addToHistory('🎮 Началась локальная дуэль!', 'system');
+    addToHistory(`📱 ${gameState.player1.name} получил: ${gameState.player1.phone.name}`, 'system');
+    addToHistory(`📱 ${gameState.player2.name} получил: ${gameState.player2.phone.name}`, 'system');
+}
+
+function getRandomPhone() {
+    return phones[Math.floor(Math.random() * phones.length)];
+}
+
+function updateGameInterface() {
+    const current = getCurrentPlayer();
+    const opponent = getOpponentPlayer();
+    
+    document.getElementById('turnBanner').innerHTML = `
+        <span style="color: var(--accent);">${current.name}</span>, ваш ход!
+        <div style="font-size: 16px; color: var(--text-secondary); margin-top: 10px;">
+            Раунд ${gameState.round}/${gameState.maxRounds}
+        </div>
+    `;
+    
+    document.getElementById('currentPlayerAvatar').textContent = 
+        gameState.currentPlayer === 1 ? '👤' : '👥';
+    
+    document.getElementById('currentPlayerName').textContent = current.name;
+    document.getElementById('currentPlayerNameDisplay').textContent = current.name;
+    document.getElementById('opponentPhoneName').textContent = '???';
+    
+    document.getElementById('knownAttributes').textContent = Object.keys(current.knownAttributes).length;
+    document.getElementById('roundCounter').textContent = gameState.round;
+    document.getElementById('possiblePhones').textContent = current.possiblePhones.length;
+    
+    const ownPhone = current.phone;
+    document.getElementById('ownPhoneName').textContent = ownPhone.name;
+    
+    const details = document.getElementById('ownPhoneDetails');
+    details.innerHTML = `
+        <div><strong>Процессор:</strong> ${ownPhone.processor}</div>
+        <div><strong>Аккумулятор:</strong> ${ownPhone.battery}</div>
+        <div><strong>Камера:</strong> ${ownPhone.camera}</div>
+        <div><strong>Экран:</strong> ${ownPhone.screen}</div>
+    `;
+    
+    document.getElementById('skipBtn').disabled = Object.keys(current.knownAttributes).length < 2;
+}
+
+function getCurrentPlayer() {
+    return gameState.currentPlayer === 1 ? gameState.player1 : gameState.player2;
+}
+
+function getOpponentPlayer() {
+    return gameState.currentPlayer === 1 ? gameState.player2 : gameState.player1;
+}
+
+function openAskModal() {
+    const modal = document.getElementById('askModal');
+    const current = getCurrentPlayer();
+    const opponent = getOpponentPlayer();
+    
+    document.getElementById('askModalSubtitle').textContent = 
+        `Узнайте характеристику телефона ${opponent.name}`;
+    
+    updateRevealedGrid();
+    createAttributeButtons();
+    
+    modal.style.display = 'block';
+    document.body.style.overflow = 'hidden';
+}
+
+function closeAskModal() {
+    document.getElementById('askModal').style.display = 'none';
+    document.body.style.overflow = 'auto';
+}
+
+function updateRevealedGrid() {
+    const current = getCurrentPlayer();
+    const grid = document.getElementById('revealedGrid');
+    grid.innerHTML = '';
+    
+    Object.entries(current.knownAttributes).forEach(([attr, value]) => {
+        const item = document.createElement('div');
+        item.className = 'revealed-item';
+        item.innerHTML = `
+            <div class="revealed-attr">${attributes[attr]}</div>
+            <div class="revealed-value">${value}</div>
+        `;
+        grid.appendChild(item);
+    });
+    
+    if (grid.children.length === 0) {
+        grid.innerHTML = '<div style="grid-column: 1/-1; text-align: center; color: #8888ff; padding: 20px;">Еще не раскрыто ни одной характеристики</div>';
+    }
+}
+
+function createAttributeButtons() {
+    const current = getCurrentPlayer();
+    const grid = document.getElementById('attributesGrid');
+    grid.innerHTML = '';
+    
+    Object.entries(attributes).forEach(([attr, name]) => {
+        const card = document.createElement('div');
+        card.className = `attr-card ${current.usedAttributes.has(attr) ? 'used' : ''}`;
+        card.dataset.attr = attr;
+        
+        if (!current.usedAttributes.has(attr)) {
+            card.onclick = () => askAttribute(attr);
+        }
+        
+        const icons = {
+            battery: '🔋',
+            materials: '🧱',
+            processor: '⚙️',
+            camera: '📸',
+            screen: '🖥️',
+            charging: '⚡',
+            price: '💰',
+            storage: '💾',
+            os: '🔷',
+            weight: '⚖️'
+        };
+        
+        card.innerHTML = `
+            <div class="attr-icon">${icons[attr] || '📋'}</div>
+            <div class="attr-name">${name}</div>
+            <div class="attr-desc">${getAttributeDescription(attr)}</div>
+            ${current.usedAttributes.has(attr) ? 
+              '<div style="color: #8a2be2; font-size: 12px; margin-top: 10px;">Уже спрашивали</div>' : 
+              '<div style="color: var(--success); font-size: 12px; margin-top: 10px;">Нажмите для выбора</div>'}
+        `;
+        
+        grid.appendChild(card);
+    });
+}
+
+function getAttributeDescription(attr) {
+    const descriptions = {
+        battery: 'Емкость аккумулятора',
+        materials: 'Материалы корпуса',
+        processor: 'Модель процессора',
+        camera: 'Разрешение и количество камер',
+        screen: 'Размер, разрешение и частота обновления',
+        charging: 'Мощность быстрой зарядки',
+        price: 'Примерная стоимость',
+        storage: 'Объем памяти',
+        os: 'Операционная система',
+        weight: 'Вес устройства'
+    };
+    return descriptions[attr] || 'Характеристика телефона';
+}
+
+function askAttribute(attr) {
+    const current = getCurrentPlayer();
+    const opponent = getOpponentPlayer();
+    
+    current.usedAttributes.add(attr);
+    
+    const value = opponent.phone[attr];
+    current.knownAttributes[attr] = value;
+    
+    current.possiblePhones = current.possiblePhones.filter(
+        phone => phone[attr] === value
+    );
+    
+    addToHistory(
+        `${current.name} узнал ${attributes[attr]} ${opponent.name}: ${value}`,
+        'player'
+    );
+    
+    closeAskModal();
+    
+    showResultModal(attr, value);
+}
+
+function showResultModal(attr, value) {
+    const current = getCurrentPlayer();
+    const modal = document.getElementById('resultModal');
+    
+    document.getElementById('resultTitle').textContent = 'Характеристика раскрыта!';
+    document.getElementById('resultSubtitle').textContent = 
+        `Вы узнали ${attributes[attr].toLowerCase()} телефона соперника`;
+    document.getElementById('resultPhoneName').textContent = value;
+    document.getElementById('resultAttribute').textContent = attributes[attr];
+    document.getElementById('resultKnownCount').textContent = Object.keys(current.knownAttributes).length;
+    document.getElementById('resultPossibleCount').textContent = current.possiblePhones.length;
+    
+    modal.style.display = 'block';
+    document.body.style.overflow = 'hidden';
+    
+    setTimeout(() => {
+        if (modal.style.display === 'block') {
+            closeResultModal();
+        }
+    }, 4000);
+}
+
+function closeResultModal() {
+    document.getElementById('resultModal').style.display = 'none';
+    document.body.style.overflow = 'auto';
+    
+    nextRound();
+}
+
+function openGuessModal() {
+    const modal = document.getElementById('guessModal');
+    const current = getCurrentPlayer();
+    const opponent = getOpponentPlayer();
+    
+    document.getElementById('guessModalSubtitle').textContent = 
+        `Попробуйте угадать телефон ${opponent.name}`;
+    
+    updateGuessRevealedGrid();
+    
+    document.getElementById('guessInputModal').value = '';
+    document.getElementById('suggestionsModal').innerHTML = '';
+    
+    modal.style.display = 'block';
+    document.body.style.overflow = 'hidden';
+    
+    setTimeout(() => {
+        document.getElementById('guessInputModal').focus();
+    }, 100);
+}
+
+function closeGuessModal() {
+    document.getElementById('guessModal').style.display = 'none';
+    document.body.style.overflow = 'auto';
+}
+
+function updateGuessRevealedGrid() {
+    const current = getCurrentPlayer();
+    const grid = document.getElementById('guessRevealedGrid');
+    grid.innerHTML = '';
+    
+    Object.entries(current.knownAttributes).forEach(([attr, value]) => {
+        const item = document.createElement('div');
+        item.className = 'revealed-item';
+        item.innerHTML = `
+            <div class="revealed-attr">${attributes[attr]}</div>
+            <div class="revealed-value">${value}</div>
+        `;
+        grid.appendChild(item);
+    });
+    
+    if (grid.children.length === 0) {
+        grid.innerHTML = '<div style="grid-column: 1/-1; text-align: center; color: #8888ff; padding: 20px;">Еще не раскрыто ни одной характеристики</div>';
+    }
+}
+
+document.getElementById('guessInputModal').addEventListener('input', function() {
+    const query = this.value.toLowerCase();
+    const suggestions = document.getElementById('suggestionsModal');
+    suggestions.innerHTML = '';
+    
+    if (query.length < 2) {
+        return;
+    }
+    
+    const matches = phones.filter(phone => 
+        phone.name.toLowerCase().includes(query)
+    ).slice(0, 8);
+    
+    matches.forEach(phone => {
+        const item = document.createElement('div');
+        item.className = 'suggestion-item-modal';
+        item.innerHTML = `
+            <div style="font-weight: bold; color: var(--accent);">${phone.name}</div>
+            <div style="font-size: 12px; color: var(--text-secondary); margin-top: 5px;">
+                ${phone.processor} • ${phone.camera} • ${phone.screen}
+            </div>
+        `;
+        item.onclick = () => {
+            document.getElementById('guessInputModal').value = phone.name;
+            suggestions.innerHTML = '';
+        };
+        suggestions.appendChild(item);
+    });
+});
+
+function submitGuess() {
+    const input = document.getElementById('guessInputModal');
+    const guess = input.value.trim();
+    
+    if (!guess) {
+        alert('Введите название телефона!');
+        return;
+    }
+    
+    const current = getCurrentPlayer();
+    const opponent = getOpponentPlayer();
+    
+    const guessedPhone = phones.find(p => p.name.toLowerCase() === guess.toLowerCase());
+    
+    if (!guessedPhone) {
+        addToHistory(
+            `${current.name} пытался угадать несуществующий телефон: "${guess}"`,
+            'error'
+        );
+        alert('Такого телефона нет в базе!');
+        return;
+    }
+    
+    if (guessedPhone.name === opponent.phone.name) {
+        endGame(true, guessedPhone.name);
+    } else {
+        addToHistory(
+            `${current.name} неудачно угадал: "${guess}" (это не ${opponent.phone.name})`,
+            'error'
+        );
+        
+        current.possiblePhones = current.possiblePhones.filter(
+            phone => phone.name !== guessedPhone.name
+        );
+        
+        const hint = getHint(guessedPhone, opponent.phone);
+        addToHistory(`💡 Подсказка: ${hint}`, 'system');
+        
+        closeGuessModal();
+        
+        nextRound();
+    }
+}
+
+function getHint(guessedPhone, actualPhone) {
+    const hints = [];
+    
+    if (guessedPhone.brand !== actualPhone.brand) {
+        hints.push(`Бренд: ${guessedPhone.brand} → ${actualPhone.brand}`);
+    }
+    
+    const guessedPrice = parseInt(guessedPhone.price);
+    const actualPrice = parseInt(actualPhone.price);
+    if (guessedPrice > actualPrice) {
+        hints.push(`Цена должна быть ниже $${guessedPrice}`);
+    } else if (guessedPrice < actualPrice) {
+        hints.push(`Цена должна быть выше $${guessedPrice}`);
+    }
+    
+    if (guessedPhone.os !== actualPhone.os) {
+        hints.push(`ОС: ${guessedPhone.os} → ${actualPhone.os}`);
+    }
+    
+    return hints.length > 0 ? 
+        `Сравните с угаданным: ${hints[Math.floor(Math.random() * hints.length)]}` :
+        'Попробуйте сравнить другие характеристики!';
+}
+
+function skipTurn() {
+    const current = getCurrentPlayer();
+    addToHistory(`${current.name} пропустил ход`, 'system');
+    nextRound();
+}
+
+function nextRound() {
+    gameState.currentPlayer = gameState.currentPlayer === 1 ? 2 : 1;
+    gameState.round++;
+    
+    if (gameState.round > gameState.maxRounds) {
+        endGame(false);
+        return;
+    }
+    
+    updateGameInterface();
+}
+
+function endGame(isWin, guessedPhone = null) {
+    gameState.gameActive = false;
+    
+    const current = getCurrentPlayer();
+    const opponent = getOpponentPlayer();
+    const modal = document.getElementById('endGameModal');
+    
+    if (isWin) {
+        document.getElementById('endGameTitle').textContent = '🏆 ПОБЕДА!';
+        document.getElementById('endGameIcon').textContent = '🎉';
+        document.getElementById('endGameMessage').textContent = 
+            `${current.name} угадал телефон ${opponent.name}: ${guessedPhone}`;
+    } else {
+        document.getElementById('endGameTitle').textContent = '⏰ ВРЕМЯ ВЫШЛО!';
+        document.getElementById('endGameIcon').textContent = '🤝';
+        document.getElementById('endGameMessage').textContent = 
+            'Лимит раундов исчерпан. Ничья!';
+    }
+    
+    document.getElementById('player1EndName').textContent = gameState.player1.name;
+    document.getElementById('player1EndPhone').textContent = gameState.player1.phone.name;
+    document.getElementById('player2EndName').textContent = gameState.player2.name;
+    document.getElementById('player2EndPhone').textContent = gameState.player2.phone.name;
+    
+    document.getElementById('endGameRounds').textContent = gameState.round - 1;
+    document.getElementById('endGameTime').textContent = getGameTime();
+    document.getElementById('endGameRevealed').textContent = 
+        Object.keys(gameState.player1.knownAttributes).length + 
+        Object.keys(gameState.player2.knownAttributes).length;
+    
+    document.getElementById('gameStatus').textContent = 'Завершена';
+    document.getElementById('gameStatus').style.color = '#ff4444';
+    
+    addToHistory(
+        isWin ? 
+        `🎉 ${current.name} победил, угадав телефон ${opponent.name}!` :
+        '⏰ Игра завершена по лимиту раундов. Ничья!',
+        'system'
+    );
+    
+    updateGameStatistics(isWin ? current.name : null);
+    
+    modal.style.display = 'block';
+    document.body.style.overflow = 'hidden';
+}
+
+function getGameTime() {
+    if (!gameState.startTime) return '0:00';
+    
+    const diff = new Date() - gameState.startTime;
+    const minutes = Math.floor(diff / 60000);
+    const seconds = Math.floor((diff % 60000) / 1000);
+    
+    return `${minutes}:${seconds.toString().padStart(2, '0')}`;
+}
+
+function updateGameTime() {
+    if (gameState.gameActive && gameState.startTime) {
+        const timeElement = document.getElementById('gameStatus');
+        if (timeElement && timeElement.textContent !== 'Завершена') {
+            timeElement.textContent = `Время: ${getGameTime()}`;
+        }
+    }
+}
+
+function updateGameStatistics(winner) {
+    let totalGames = parseInt(localStorage.getItem('totalGames') || '0');
+    totalGames++;
+    localStorage.setItem('totalGames', totalGames);
+    
+    if (winner) {
+        let player1Wins = parseInt(localStorage.getItem('player1Wins') || '0');
+        let player2Wins = parseInt(localStorage.getItem('player2Wins') || '0');
+        
+        if (winner === gameState.player1.name) {
+            player1Wins++;
+            localStorage.setItem('player1Wins', player1Wins);
+        } else {
+            player2Wins++;
+            localStorage.setItem('player2Wins', player2Wins);
+        }
+    }
+}
+
+function addToHistory(message, type = 'player') {
+    const history = document.getElementById('gameHistory');
+    const item = document.createElement('div');
+    item.className = `history-item ${type}`;
+    
+    const time = new Date().toLocaleTimeString([], {hour: '2-digit', minute:'2-digit'});
+    const icon = type === 'system' ? '📢' : type === 'error' ? '❌' : '👤';
+    
+    item.innerHTML = `
+        <div class="history-time">${time}</div>
+        <div class="history-text">${icon} ${message}</div>
+    `;
+    
+    history.appendChild(item);
+    history.scrollTop = history.scrollHeight;
+    
+    gameState.history.push({ time, message, type });
+    
+    if (history.children.length > 50) {
+        history.removeChild(history.firstChild);
+    }
+}
+
+function restartGame() {
+    document.getElementById('endGameModal').style.display = 'none';
+    document.body.style.overflow = 'auto';
+    
+    document.getElementById('gameHistory').innerHTML = '';
+    
+    startNewGame();
+}
+
+function setupMusic() {
+    const music = document.getElementById('bgMusic');
+    const toggleBtn = document.getElementById('musicToggle');
+    let musicEnabled = localStorage.getItem('musicEnabled') !== 'false';
+    
+    if (musicEnabled) {
+        music.play().catch(() => {
+            musicEnabled = false;
+            toggleBtn.textContent = "Музыка: OFF";
+        });
+        toggleBtn.textContent = "Музыка: ON";
+    } else {
+        music.pause();
+        toggleBtn.textContent = "Музыка: OFF";
+    }
+    
+    toggleBtn.addEventListener('click', () => {
+        if(musicEnabled) {
+            music.pause();
+            toggleBtn.textContent = "Музыка: OFF";
+            musicEnabled = false;
+        } else {
+            music.play();
+            toggleBtn.textContent = "Музыка: ON";
+            musicEnabled = true;
+        }
+        localStorage.setItem('musicEnabled', musicEnabled);
+    });
+}
+
+document.addEventListener('keydown', (e) => {
+    if (e.key === 'Escape') {
+        closeAskModal();
+        closeGuessModal();
+        closeResultModal();
+    }
+});
+</script>
+</body>
+</html>
