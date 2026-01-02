@@ -54,26 +54,6 @@ h1 {
     font-size: 18px;
 }
 
-.btn-start {
-    background: linear-gradient(90deg, var(--accent), var(--success));
-    color: black;
-    border: none;
-    padding: 15px 30px;
-    border-radius: 10px;
-    font-family: 'Orbitron', sans-serif;
-    font-weight: bold;
-    font-size: 18px;
-    cursor: pointer;
-    transition: all 0.3s;
-    width: 100%;
-    margin-top: 20px;
-}
-
-.btn-start:hover {
-    transform: translateY(-2px);
-    box-shadow: 0 10px 25px rgba(8, 240, 255, 0.4);
-}
-
 .music-btn {
     position: fixed;
     bottom: 20px;
@@ -90,6 +70,24 @@ h1 {
 
 .music-btn:hover {
     background: rgba(8, 240, 255, 0.2);
+}
+
+.back-btn {
+    position: fixed;
+    top: 20px;
+    left: 20px;
+    padding: 10px 20px;
+    background: rgba(16, 16, 38, 0.8);
+    border: 1px solid var(--accent-light);
+    border-radius: 8px;
+    color: white;
+    cursor: pointer;
+    font-family: 'Share Tech Mono', monospace;
+}
+
+.back-btn:hover {
+    background: rgba(8, 240, 255, 0.2);
+    border-color: var(--accent);
 }
 
 @keyframes pulse {
@@ -113,16 +111,5 @@ h1 {
     }
     .container {
         padding: 10px;
-    }
-    .mode-selector {
-        margin: 20px auto;
-    }
-    .players {
-        flex-direction: column;
-        align-items: center;
-    }
-    .player-input {
-        width: 100%;
-        max-width: 300px;
     }
 }
