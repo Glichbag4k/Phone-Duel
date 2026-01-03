@@ -93,7 +93,6 @@ h1 {
     color: #000;
 }
 
-/* Боковые меню с характеристиками */
 .player-sidebar {
     width: 300px;
     background: var(--card-bg);
@@ -153,7 +152,6 @@ h1 {
     font-style: italic;
 }
 
-/* Центральная область игры */
 .game-center {
     flex: 1;
     max-width: 800px;
@@ -248,7 +246,6 @@ h1 {
     color: var(--text-secondary);
 }
 
-/* Основные кнопки действий */
 .main-action-buttons {
     display: flex;
     gap: 20px;
@@ -294,7 +291,6 @@ h1 {
     transform: none;
 }
 
-/* Блок после одного действия */
 .after-action-buttons {
     background: var(--card-bg);
     border-radius: 20px;
@@ -326,7 +322,6 @@ h1 {
     width: 100%;
 }
 
-/* Поле для угадывания телефона */
 .guess-container {
     display: flex;
     gap: 15px;
@@ -378,7 +373,6 @@ h1 {
     background: rgba(8, 240, 255, 0.2);
 }
 
-/* Модальные окна */
 .fullscreen-modal {
     display: none;
     position: fixed;
@@ -610,7 +604,6 @@ h1 {
 <button class="back-btn" onclick="window.location.href='index.html'">← Назад</button>
 
 <div class="container">
-    <!-- Левое меню - характеристики игрока 1 -->
     <div class="player-sidebar" id="player1Sidebar">
         <div class="player-sidebar-title" id="player1SidebarTitle">Игрок 1</div>
         <div class="attributes-sidebar" id="player1Attributes">
@@ -618,7 +611,6 @@ h1 {
         </div>
     </div>
     
-    <!-- Центральная область игры -->
     <div class="game-center">
         <h1>Phone Duel</h1>
         
@@ -654,7 +646,6 @@ h1 {
         </div>
     </div>
     
-    <!-- Основные кнопки действий -->
     <div class="main-action-buttons" id="mainActionButtons">
         <button class="action-btn btn-ask" onclick="openAskModal()">
             СПРОСИТЬ ХАРАКТЕРИСТИКУ
@@ -664,7 +655,6 @@ h1 {
         </button>
     </div>
     
-    <!-- Блок для угадывания телефона -->
     <div class="after-action-buttons" id="guessField" style="display: none;">
         <div class="after-action-title">Попробуйте угадать телефон</div>
         <div class="guess-container" style="position: relative;">
@@ -681,7 +671,6 @@ h1 {
         </div>
     </div>
     
-    <!-- Блок после одного действия -->
     <div class="after-action-buttons" id="afterActionButtons">
         <div class="after-action-title">Ход завершен!</div>
         <div class="after-action-content">
@@ -695,7 +684,6 @@ h1 {
     </div>
 </div>
 
-<!-- Правое меню - характеристики игрока 2 -->
 <div class="player-sidebar" id="player2Sidebar">
     <div class="player-sidebar-title" id="player2SidebarTitle">Игрок 2</div>
     <div class="attributes-sidebar" id="player2Attributes">
@@ -704,7 +692,6 @@ h1 {
 </div>
 </div>
 
-<!-- Модальное окно выбора характеристики -->
 <div class="fullscreen-modal" id="askModal">
 <button class="close-modal-btn" onclick="closeAskModal()">✕</button>
 <div class="modal-header">
@@ -721,7 +708,6 @@ h1 {
 </div>
 </div>
 
-<!-- Модальное окно результата -->
 <div class="fullscreen-modal" id="resultModal">
 <div class="result-reveal">
     <div class="modal-title" id="resultTitle">Характеристика раскрыта!</div>
@@ -752,7 +738,6 @@ h1 {
 </div>
 </div>
 
-<!-- Модальное окно конца игры -->
 <div class="end-game-modal" id="endGameModal">
 <div class="end-game-content">
     <div class="modal-title" id="endGameTitle">ИГРА ОКОНЧЕНА!</div>
@@ -802,7 +787,6 @@ h1 {
 <button id="musicToggle" class="music-btn">Музыка: ON</button>
 
 <script>
-// ========== БАЗА ДАННЫХ ТЕЛЕФОНОВ ==========
 const phones = [
     {name:"iPhone 16 Pro Max", battery:"4676 mAh", materials:"Титан", processor:"A18 Pro", camera:"48+12+12+12 МП", screen:'6.9" Super Retina XDR 2796x1290 120Гц', charging:"35 Вт", price:"1299", storage:"1 ТБ", os:"iOS 18", weight:"221 г", brand:"Apple"},
     {name:"iPhone 16", battery:"3561 mAh", materials:"Алюминий", processor:"A17 Pro", camera:"48+12 МП", screen:'6.1" OLED 2556x1179 60Гц', charging:"20 Вт", price:"799", storage:"128 ГБ", os:"iOS 18", weight:"171 г", brand:"Apple"},
@@ -831,7 +815,6 @@ const phones = [
     {name:"Fairphone 5", battery:"4200 mAh", materials:"Переработанный пластик", processor:"QCM6490", camera:"50+50 МП", screen:'6.46" OLED 2770x1224 90Гц', charging:"30 Вт", price:"699", storage:"256 ГБ", os:"Android 13", weight:"212 г", brand:"Fairphone"}
 ];
 
-// ========== КОНСТАНТЫ И ПЕРЕМЕННЫЕ ==========
 const attributes = {
     battery: "🔋 Аккумулятор",
     materials: "🧱 Материалы",
@@ -867,12 +850,10 @@ let gameState = {
     maxRounds: 20,
     gameActive: true,
     startTime: null,
-    actionTaken: false  // Флаг, что действие уже совершено
+    actionTaken: false
 };
 
-// ========== ОСНОВНЫЕ ФУНКЦИИ ==========
 document.addEventListener('DOMContentLoaded', () => {
-    // Получаем имена игроков
     const player1Name = localStorage.getItem('player1Name');
     const player2Name = localStorage.getItem('player2Name');
     
@@ -884,12 +865,10 @@ document.addEventListener('DOMContentLoaded', () => {
     
     gameState.startTime = new Date();
     
-    // Инициализируем автодополнение
     initAutocomplete();
 });
 
 function startNewGame() {
-    // Сбрасываем состояние игры
     gameState = {
         player1: { 
             name: gameState.player1.name, 
@@ -915,19 +894,15 @@ function startNewGame() {
         actionTaken: false
     };
     
-    // Выбираем рандомные телефоны
     gameState.player1.phone = getRandomPhone();
     
-    // Убеждаемся, что телефоны разные
     do {
         gameState.player2.phone = getRandomPhone();
     } while (gameState.player2.phone.name === gameState.player1.phone.name);
     
-    // Инициализируем списки возможных телефонов
     gameState.player1.possiblePhones = [...phones];
     gameState.player2.possiblePhones = [...phones];
     
-    // Обновляем интерфейс
     updateGameInterface();
     updateSidebars();
 }
@@ -941,7 +916,6 @@ function updateGameInterface() {
     const current = getCurrentPlayer();
     const opponent = getOpponentPlayer();
     
-    // Обновляем баннер с ходом
     document.getElementById('turnBanner').innerHTML = `
         <span style="color: var(--accent);">${current.name}</span>, ваш ход!
         <div style="font-size: 16px; color: var(--text-secondary); margin-top: 10px;">
@@ -949,7 +923,6 @@ function updateGameInterface() {
         </div>
     `;
     
-    // Обновляем аватар и имя текущего игрока
     document.getElementById('currentPlayerAvatar').textContent = gameState.currentPlayer === 1 ? '👤' : '👥';
     document.getElementById('currentPlayerNameDisplay').textContent = current.name;
     document.getElementById('opponentPhoneName').textContent = '???';
@@ -958,7 +931,6 @@ function updateGameInterface() {
     document.getElementById('possiblePhones').textContent = current.possiblePhones.length;
     document.getElementById('ownPhoneName').textContent = current.phone.name;
     
-    // Обновляем детали собственного телефона
     const details = document.getElementById('ownPhoneDetails');
     details.innerHTML = `
         <div><strong>Процессор:</strong> ${current.phone.processor}</div>
@@ -967,14 +939,11 @@ function updateGameInterface() {
         <div><strong>Экран:</strong> ${current.phone.screen}</div>
     `;
     
-    // Показываем/скрываем блоки в зависимости от состояния
     if (gameState.actionTaken) {
-        // Действие уже совершено - показываем блок завершения хода
         document.getElementById('mainActionButtons').style.display = 'none';
         document.getElementById('guessField').style.display = 'none';
         document.getElementById('afterActionButtons').style.display = 'block';
     } else {
-        // Действие еще не совершено - показываем основные кнопки
         document.getElementById('mainActionButtons').style.display = 'flex';
         document.getElementById('guessField').style.display = 'none';
         document.getElementById('afterActionButtons').style.display = 'none';
@@ -982,14 +951,10 @@ function updateGameInterface() {
 }
 
 function updateSidebars() {
-    // Обновляем заголовки боковых меню
     document.getElementById('player1SidebarTitle').textContent = gameState.player1.name;
     document.getElementById('player2SidebarTitle').textContent = gameState.player2.name;
     
-    // Обновляем характеристики игрока 1
     updatePlayerSidebar('player1', gameState.player1);
-    
-    // Обновляем характеристики игрока 2
     updatePlayerSidebar('player2', gameState.player2);
 }
 
@@ -1022,18 +987,15 @@ function getOpponentPlayer() {
 }
 
 function showGuessField() {
-    // Показываем поле для угадывания
     document.getElementById('mainActionButtons').style.display = 'none';
     document.getElementById('guessField').style.display = 'block';
     document.getElementById('afterActionButtons').style.display = 'none';
     
-    // Очищаем поле ввода
     document.getElementById('guessInput').value = '';
     document.getElementById('guessSuggestions').style.display = 'none';
 }
 
 function cancelGuess() {
-    // Отменяем угадывание, возвращаемся к выбору действия
     document.getElementById('mainActionButtons').style.display = 'flex';
     document.getElementById('guessField').style.display = 'none';
     document.getElementById('afterActionButtons').style.display = 'none';
@@ -1093,33 +1055,24 @@ function askAttribute(attr) {
     const current = getCurrentPlayer();
     const opponent = getOpponentPlayer();
     
-    // Добавляем атрибут в использованные
     current.usedAttributes.add(attr);
     
-    // Получаем значение атрибута у телефона оппонента
     const value = opponent.phone[attr];
     
-    // Сохраняем значение
     current.knownAttributes[attr] = value;
     
-    // Фильтруем возможные телефоны
     current.possiblePhones = current.possiblePhones.filter(phone => {
         return phone[attr] === value;
     });
     
-    // Действие совершено
     gameState.actionTaken = true;
     
-    // Закрываем модальное окно
     closeAskModal();
     
-    // Обновляем боковое меню
     updateSidebars();
     
-    // Обновляем интерфейс
     updateGameInterface();
     
-    // Показываем результат
     showResultModal(attr, value);
 }
 
@@ -1182,7 +1135,6 @@ function initAutocomplete() {
         }
     });
     
-    // Скрываем подсказки при клике вне поля
     document.addEventListener('click', function(e) {
         if (!guessInput.contains(e.target) && !suggestions.contains(e.target)) {
             suggestions.style.display = 'none';
@@ -1202,7 +1154,6 @@ function submitGuess() {
     const current = getCurrentPlayer();
     const opponent = getOpponentPlayer();
     
-    // Ищем телефон независимо от регистра и пробелов
     const guessedPhone = phones.find(p => 
         p.name.toLowerCase() === guess.toLowerCase()
     );
@@ -1216,32 +1167,25 @@ function submitGuess() {
         endGame(true, guessedPhone.name);
     } else {
         alert(`Неверно! Это не ${guessedPhone.name}`);
-        // Удаляем неправильно угаданный телефон из возможных
         current.possiblePhones = current.possiblePhones.filter(phone => phone.name !== guessedPhone.name);
         
-        // Действие совершено
         gameState.actionTaken = true;
         
-        // Обновляем интерфейс
         updateGameInterface();
     }
 }
 
 function nextTurn() {
-    // Сбрасываем флаг действия
     gameState.actionTaken = false;
     
-    // Меняем игрока
     gameState.currentPlayer = gameState.currentPlayer === 1 ? 2 : 1;
     gameState.round++;
     
-    // Проверяем, не закончилась ли игра
     if (gameState.round > gameState.maxRounds) {
         endGame(false);
         return;
     }
     
-    // Обновляем интерфейс
     updateGameInterface();
 }
 
@@ -1339,7 +1283,6 @@ function setupMusic() {
     });
 }
 
-// Обработчик Escape для закрытия модальных окон
 document.addEventListener('keydown', (e) => {
     if (e.key === 'Escape') {
         closeAskModal();
