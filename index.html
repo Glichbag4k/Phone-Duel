@@ -4,8 +4,51 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width,initial-scale=1.0">
 <title>Phone Duel</title>
-<link rel="stylesheet" href="style.css">
+<link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700&family=Share+Tech+Mono&display=swap" rel="stylesheet">
 <style>
+:root {
+    --bg-primary: #0a0a16;
+    --bg-secondary: #111128;
+    --accent: #08f0ff;
+    --accent-light: rgba(8, 240, 255, 0.3);
+    --success: #00ff88;
+    --text-primary: #ffffff;
+    --text-secondary: #a0a0c0;
+    --card-bg: rgba(20, 20, 40, 0.7);
+}
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+body {
+    font-family: 'Share Tech Mono', monospace;
+    background: linear-gradient(135deg, #0a0a16 0%, #1a1a3a 100%);
+    color: var(--text-primary);
+    min-height: 100vh;
+    background-attachment: fixed;
+    overflow-x: hidden;
+}
+.container {
+    max-width: 1400px;
+    margin: 0 auto;
+    padding: 20px;
+}
+h1 {
+    font-family: 'Orbitron', sans-serif;
+    font-size: 48px;
+    text-align: center;
+    margin: 20px 0 40px;
+    color: var(--accent);
+    text-shadow: 0 0 20px currentColor;
+    letter-spacing: 2px;
+}
+.subtitle {
+    text-align: center;
+    color: var(--text-secondary);
+    font-size: 18px;
+    margin-bottom: 40px;
+}
 .stats-bar {
     display: flex;
     justify-content: space-between;
@@ -90,52 +133,6 @@
     font-size: 16px;
     text-align: center;
 }
-.room-section {
-    margin-top: 20px;
-    display: flex;
-    flex-direction: column;
-    gap: 15px;
-    align-items: center;
-}
-.room-input {
-    width: 100%;
-    max-width: 300px;
-    text-align: center;
-}
-.room-actions {
-    display: flex;
-    gap: 15px;
-    margin-top: 10px;
-    flex-wrap: wrap;
-    justify-content: center;
-}
-.btn-create, .btn-join, .btn-bot {
-    padding: 12px 25px;
-    border-radius: 10px;
-    font-weight: bold;
-    font-family: 'Orbitron', sans-serif;
-    cursor: pointer;
-    transition: all 0.2s;
-    border: none;
-    font-size: 15px;
-    min-width: 180px;
-}
-.btn-create {
-    background: linear-gradient(90deg, #08f0ff, #0ff8d1);
-    color: black;
-}
-.btn-join {
-    background: linear-gradient(90deg, #ff0878, #ff8c00);
-    color: white;
-}
-.btn-bot {
-    background: linear-gradient(90deg, #8a2be2, #9370db);
-    color: white;
-}
-.btn-create:hover, .btn-join:hover, .btn-bot:hover {
-    transform: scale(1.05);
-    box-shadow: 0 0 20px currentColor;
-}
 .difficulty-selector {
     margin: 20px 0;
     display: flex;
@@ -166,6 +163,188 @@
     margin-top: 10px;
     text-align: center;
 }
+.btn-bot, .btn-create {
+    padding: 15px 30px;
+    border-radius: 12px;
+    border: none;
+    font-family: 'Orbitron', sans-serif;
+    font-weight: bold;
+    font-size: 16px;
+    cursor: pointer;
+    transition: all 0.3s;
+    min-width: 200px;
+}
+.btn-bot {
+    background: linear-gradient(90deg, #8a2be2, #9370db);
+    color: white;
+}
+.btn-create {
+    background: linear-gradient(90deg, var(--accent), var(--success));
+    color: black;
+}
+.btn-bot:hover, .btn-create:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 10px 20px rgba(0, 0, 0, 0.3);
+}
+.phones-table-section {
+    margin-top: 50px;
+}
+.phones-table-title {
+    text-align: center;
+    color: var(--accent);
+    font-size: 24px;
+    margin-bottom: 20px;
+    font-family: 'Orbitron', sans-serif;
+}
+.phones-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+    gap: 15px;
+    margin-top: 20px;
+}
+.phone-card {
+    background: rgba(16, 16, 38, 0.6);
+    border: 1px solid var(--accent-light);
+    border-radius: 10px;
+    padding: 20px;
+    cursor: pointer;
+    transition: all 0.3s;
+}
+.phone-card:hover {
+    transform: translateY(-5px);
+    border-color: var(--accent);
+    box-shadow: 0 10px 20px rgba(8, 240, 255, 0.2);
+}
+.phone-name {
+    color: var(--success);
+    font-weight: bold;
+    margin-bottom: 10px;
+    font-size: 16px;
+    text-align: center;
+}
+.phone-brand {
+    color: #8888ff;
+    font-size: 14px;
+    text-align: center;
+    margin-bottom: 10px;
+}
+.phone-specs {
+    font-size: 12px;
+    color: var(--text-secondary);
+}
+.phone-specs div {
+    margin-bottom: 5px;
+}
+.phone-modal {
+    display: none;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.95);
+    z-index: 10000;
+    overflow-y: auto;
+    padding: 20px;
+}
+.modal-header {
+    text-align: center;
+    margin-bottom: 30px;
+    padding-bottom: 20px;
+    border-bottom: 2px solid var(--accent);
+}
+.modal-title {
+    font-size: 36px;
+    color: var(--accent);
+    margin-bottom: 10px;
+    text-shadow: 0 0 20px currentColor;
+}
+.modal-subtitle {
+    color: var(--text-secondary);
+    font-size: 18px;
+}
+.modal-content {
+    max-width: 800px;
+    margin: 0 auto;
+}
+.phone-details-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: 15px;
+    margin: 30px 0;
+}
+.detail-item {
+    background: rgba(16, 16, 38, 0.6);
+    border-radius: 10px;
+    padding: 15px;
+    border: 1px solid var(--accent-light);
+}
+.detail-label {
+    color: var(--success);
+    font-weight: bold;
+    margin-bottom: 5px;
+    font-size: 14px;
+}
+.detail-value {
+    color: white;
+    font-size: 16px;
+}
+.close-modal-btn {
+    position: fixed;
+    top: 20px;
+    right: 20px;
+    background: rgba(255, 255, 255, 0.1);
+    border: 2px solid var(--accent);
+    border-radius: 50%;
+    width: 60px;
+    height: 60px;
+    color: var(--accent);
+    font-size: 24px;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 10001;
+}
+.close-modal-btn:hover {
+    background: var(--accent);
+    color: black;
+    transform: rotate(90deg);
+}
+.search-box {
+    background: rgba(16, 16, 38, 0.8);
+    border: 2px solid var(--accent);
+    border-radius: 10px;
+    padding: 15px 20px;
+    color: white;
+    width: 100%;
+    font-family: 'Share Tech Mono', monospace;
+    font-size: 16px;
+    margin-bottom: 20px;
+}
+.search-box:focus {
+    outline: none;
+    box-shadow: 0 0 15px rgba(8, 240, 255, 0.3);
+}
+.music-btn {
+    position: fixed;
+    top: 20px;
+    right: 20px;
+    background: rgba(20, 20, 40, 0.8);
+    border: 2px solid var(--accent);
+    color: var(--accent);
+    padding: 10px 20px;
+    border-radius: 10px;
+    font-family: 'Orbitron', sans-serif;
+    font-size: 14px;
+    cursor: pointer;
+    z-index: 1000;
+    transition: all 0.3s;
+}
+.music-btn:hover {
+    background: var(--accent);
+    color: #000;
+}
 @media (max-width: 768px) {
     .mode-selector {
         grid-template-columns: 1fr;
@@ -175,18 +354,24 @@
         gap: 15px;
         text-align: center;
     }
-    .room-actions {
+    .players {
         flex-direction: column;
         align-items: center;
     }
-    .btn-create, .btn-join, .btn-bot {
+    .player-input {
+        max-width: 100%;
+    }
+    .btn-bot, .btn-create {
         width: 100%;
-        max-width: 300px;
+    }
+    .phones-grid {
+        grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
     }
 }
 </style>
 </head>
 <body>
+
 <div class="container">
     <h1>Phone Duel</h1>
     <p class="subtitle">Выберите режим игры</p>
@@ -194,7 +379,7 @@
     <div class="stats-bar">
         <div class="stat-item">
             <span>📱 Телефонов:</span>
-            <span class="stat-value" id="phoneCount">24</span>
+            <span class="stat-value" id="phoneCount">55</span>
         </div>
         <div class="stat-item">
             <span>🎮 Сыграно:</span>
@@ -232,14 +417,98 @@
             <button class="btn-create" onclick="startLocalGame()">ИГРАТЬ ЛОКАЛЬНО</button>
         </div>
     </div>
+    
+    <div class="phones-table-section">
+        <div class="phones-table-title">📱 База данных телефонов</div>
+        <input type="text" class="search-box" id="phoneSearch" placeholder="Поиск телефона..." autocomplete="off">
+        <div class="phones-grid" id="phonesGrid"></div>
+    </div>
+</div>
+
+<div class="phone-modal" id="phoneModal">
+    <button class="close-modal-btn" onclick="closePhoneModal()">✕</button>
+    <div class="modal-header">
+        <div class="modal-title" id="modalPhoneName">Название телефона</div>
+        <div class="modal-subtitle" id="modalPhoneBrand">Бренд</div>
+    </div>
+    <div class="modal-content">
+        <div class="phone-details-grid" id="modalPhoneDetails"></div>
+    </div>
 </div>
 
 <audio id="bgMusic" loop>
-    <source src="cyberpunk_music.mp3" type="audio/mpeg">
+    <source src="https://assets.mixkit.co/music/preview/mixkit-tech-house-vibes-130.mp3" type="audio/mpeg">
 </audio>
 <button id="musicToggle" class="music-btn">Музыка: ON</button>
 
 <script>
+const phones = [
+    {name:"iPhone 16 Pro Max", battery:"4676 mAh", materials:"Титан", processor:"A18 Pro", camera:"48+12+12+12 МП", screen:'6.9" Super Retina XDR 2796x1290 120Гц', charging:"35 Вт", price:"1299", storage:"1 ТБ", os:"iOS 18", weight:"221 г", brand:"Apple"},
+    {name:"iPhone 16", battery:"3561 mAh", materials:"Алюминий", processor:"A17 Pro", camera:"48+12 МП", screen:'6.1" OLED 2556x1179 60Гц', charging:"20 Вт", price:"799", storage:"128 ГБ", os:"iOS 18", weight:"171 г", brand:"Apple"},
+    {name:"iPhone SE 4", battery:"3279 mAh", materials:"Алюминий", processor:"A16 Bionic", camera:"48 МП", screen:'6.1" OLED 2532x1170 60Гц', charging:"20 Вт", price:"499", storage:"128 ГБ", os:"iOS 18", weight:"165 г", brand:"Apple"},
+    {name:"Samsung Galaxy S24 Ultra", battery:"5000 mAh", materials:"Титан", processor:"Snapdragon 8 Gen 3", camera:"200+50+12+10 МП", screen:'6.8" Dynamic AMOLED 3120x1440 120Гц', charging:"45 Вт", price:"1199", storage:"512 ГБ", os:"Android 14", weight:"232 г", brand:"Samsung"},
+    {name:"Samsung Galaxy S24", battery:"4000 mAh", materials:"Алюминий", processor:"Exynos 2400", camera:"50+10+12 МП", screen:'6.2" Dynamic AMOLED 2340x1080 120Гц', charging:"25 Вт", price:"799", storage:"256 ГБ", os:"Android 14", weight:"167 г", brand:"Samsung"},
+    {name:"Samsung Galaxy Z Fold6", battery:"4400 mAh", materials:"Алюминий", processor:"Snapdragon 8 Gen 3", camera:"50+12+10 МП", screen:'7.6" Dynamic AMOLED 2176x1812 120Гц', charging:"25 Вт", price:"1799", storage:"512 ГБ", os:"Android 14", weight:"239 г", brand:"Samsung"},
+    {name:"Google Pixel 9 Pro", battery:"5050 mAh", materials:"Алюминий", processor:"Tensor G4", camera:"50+48+48 МП", screen:'6.7" LTPO OLED 2992x1344 120Гц', charging:"30 Вт", price:"999", storage:"256 ГБ", os:"Android 15", weight:"193 г", brand:"Google"},
+    {name:"Google Pixel 9", battery:"4575 mAh", materials:"Алюминий", processor:"Tensor G4", camera:"50+48 МП", screen:'6.2" OLED 2400x1080 120Гц', charging:"27 Вт", price:"699", storage:"128 ГБ", os:"Android 15", weight:"168 г", brand:"Google"},
+    {name:"OnePlus 12", battery:"5400 mAh", materials:"Стекло и металл", processor:"Snapdragon 8 Gen 3", camera:"50+64+48 МП", screen:'6.82" LTPO AMOLED 3168x1440 120Гц', charging:"100 Вт", price:"799", storage:"256 ГБ", os:"OxygenOS 14", weight:"220 г", brand:"OnePlus"},
+    {name:"OnePlus Nord 4", battery:"5500 mAh", materials:"Алюминий", processor:"Snapdragon 7+ Gen 3", camera:"50+8 МП", screen:'6.74" Fluid AMOLED 2772x1240 120Гц', charging:"80 Вт", price:"449", storage:"256 ГБ", os:"OxygenOS 14", weight:"190 г", brand:"OnePlus"},
+    {name:"Xiaomi 14 Ultra", battery:"5300 mAh", materials:"Нано-кожа и металл", processor:"Snapdragon 8 Gen 3", camera:"50+50+50+50 МП", screen:'6.73" LTPO AMOLED 3200x1440 120Гц', charging:"90 Вт", price:"1299", storage:"512 ГБ", os:"HyperOS", weight:"219 г", brand:"Xiaomi"},
+    {name:"Xiaomi 14", battery:"4610 mAh", materials:"Стекло и металл", processor:"Snapdragon 8 Gen 3", camera:"50+50+50 МП", screen:'6.36" LTPO AMOLED 2670x1200 120Гц', charging:"90 Вт", price:"899", storage:"256 ГБ", os:"HyperOS", weight:"188 г", brand:"Xiaomi"},
+    {name:"Redmi Note 13 Pro", battery:"5100 mAh", materials:"Стекло", processor:"Snapdragon 7s Gen 2", camera:"200+8+2 МП", screen:'6.67" AMOLED 2712x1220 120Гц', charging:"67 Вт", price:"399", storage:"256 ГБ", os:"HyperOS", weight:"187 г", brand:"Xiaomi"},
+    {name:"Realme GT 5 Pro", battery:"5400 mAh", materials:"Стекло и металл", processor:"Snapdragon 8 Gen 3", camera:"50+50+8 МП", screen:'6.78" AMOLED 2780x1264 120Гц', charging:"100 Вт", price:"749", storage:"512 ГБ", os:"Realme UI 5", weight:"218 г", brand:"Realme"},
+    {name:"Vivo X100 Pro", battery:"5400 mAh", materials:"Стекло и металл", processor:"Dimensity 9300", camera:"50+50+50 МП", screen:'6.78" LTPO AMOLED 2800x1260 120Гц', charging:"100 Вт", price:"899", storage:"512 ГБ", os:"Funtouch OS 14", weight:"221 g", brand:"Vivo"},
+    {name:"Oppo Find X7 Ultra", battery:"5000 mAh", materials:"Стекло и металл", processor:"Snapdragon 8 Gen 3", camera:"50+50+50+50 МП", screen:'6.82" LTPO AMOLED 3168x1440 120Гц', charging:"100 Вт", price:"1199", storage:"512 ГБ", os:"ColorOS 14", weight:"221 г", brand:"Oppo"},
+    {name:"Asus ROG Phone 8", battery:"5500 mAh", materials:"Стекло и металл", processor:"Snapdragon 8 Gen 3", camera:"50+13+32 МП", screen:'6.78" AMOLED 2448x1080 165Гц', charging:"65 Вт", price:"1099", storage:"512 ГБ", os:"ROG UI", weight:"225 г", brand:"Asus"},
+    {name:"Nothing Phone 2", battery:"4700 mAh", materials:"Стекло и алюминий", processor:"Snapdragon 8+ Gen 1", camera:"50+50 МП", screen:'6.7" LTPO OLED 2412x1080 120Гц', charging:"45 Вт", price:"599", storage:"256 ГБ", os:"Nothing OS 2.5", weight:"201 г", brand:"Nothing"},
+    {name:"Motorola Edge 40 Neo", battery:"5000 mAh", materials:"Веганская кожа", processor:"Dimensity 7030", camera:"50+13 МП", screen:'6.55" pOLED 2400x1080 144Гц', charging:"68 Вт", price:"449", storage:"256 ГБ", os:"Android 14", weight:"172 г", brand:"Motorola"},
+    {name:"Honor Magic 6 Pro", battery:"5600 mAh", materials:"Стекло и металл", processor:"Snapdragon 8 Gen 3", camera:"50+50+180 МП", screen:'6.8" LTPO OLED 2800x1280 120Гц', charging:"80 Вт", price:"1099", storage:"512 ГБ", os:"MagicOS 8", weight:"229 г", brand:"Honor"},
+    {name:"Sony Xperia 1 V", battery:"5000 mAh", materials:"Стекло и металл", processor:"Snapdragon 8 Gen 2", camera:"52+12+12 МП", screen:'6.5" OLED 3840x1644 120Гц', charging:"30 Вт", price:"1399", storage:"256 ГБ", os:"Android 14", weight:"187 г", brand:"Sony"},
+    {name:"Huawei P60 Pro", battery:"4815 mAh", materials:"Нано-кристалл", processor:"Snapdragon 8+ Gen 1", camera:"48+13+48 МП", screen:'6.67" LTPO OLED 2700x1220 120Гц', charging:"88 Вт", price:"1199", storage:"512 ГБ", os:"HarmonyOS 4", weight:"200 г", brand:"Huawei"},
+    {name:"ZTE Nubia Z60 Ultra", battery:"6000 mAh", materials:"Стекло и металл", processor:"Snapdragon 8 Gen 3", camera:"50+50+64 МП", screen:'6.8" AMOLED 2480x1116 120Гц', charging:"80 Вт", price:"799", storage:"512 ГБ", os:"MyOS 14", weight:"246 г", brand:"ZTE"},
+    {name:"CAT S75", battery:"5000 mAh", materials:"Резина и металл", processor:"Dimensity 930", camera:"50+8 МП", screen:'6.6" IPS 2408x1080 120Гц', charging:"35 Вт", price:"599", storage:"128 ГБ", os:"Android 13", weight:"268 г", brand:"CAT"},
+    {name:"Fairphone 5", battery:"4200 mAh", materials:"Переработанный пластик", processor:"QCM6490", camera:"50+50 МП", screen:'6.46" OLED 2770x1224 90Гц', charging:"30 Вт", price:"699", storage:"256 ГБ", os:"Android 13", weight:"212 г", brand:"Fairphone"},
+    {name:"iPhone 15 Pro Max", battery:"4422 mAh", materials:"Титан", processor:"A17 Pro", camera:"48+12+12+12 МП", screen:'6.7" Super Retina XDR 2796x1290 120Гц', charging:"27 Вт", price:"1199", storage:"1 ТБ", os:"iOS 17", weight:"221 г", brand:"Apple"},
+    {name:"Samsung Galaxy A54", battery:"5000 mAh", materials:"Стекло", processor:"Exynos 1380", camera:"50+12+5 МП", screen:'6.4" Super AMOLED 2340x1080 120Гц', charging:"25 Вт", price:"449", storage:"256 ГБ", os:"Android 14", weight:"202 г", brand:"Samsung"},
+    {name:"Google Pixel 8 Pro", battery:"5050 mAh", materials:"Алюминий и стекло", processor:"Tensor G3", camera:"50+48+48 МП", screen:'6.7" LTPO OLED 2992x1344 120Гц', charging:"30 Вт", price:"999", storage:"256 ГБ", os:"Android 14", weight:"213 г", brand:"Google"},
+    {name:"OnePlus Open", battery:"4800 mAh", materials:"Алюминий", processor:"Snapdragon 8 Gen 2", camera:"48+48+64 МП", screen:'7.82" Flexi-fluid AMOLED 2440x2268 120Гц', charging:"67 Вт", price:"1699", storage:"512 ГБ", os:"OxygenOS 13", weight:"245 г", brand:"OnePlus"},
+    {name:"Xiaomi 13T Pro", battery:"5000 mAh", materials:"Стекло", processor:"Dimensity 9200+", camera:"50+50+12 МП", screen:'6.67" CrystalRes AMOLED 2712x1220 144Гц', charging:"120 Вт", price:"799", storage:"512 ГБ", os:"MIUI 14", weight:"200 г", brand:"Xiaomi"},
+    {name:"Nothing Phone 1", battery:"4500 mAh", materials:"Стекло и алюминий", processor:"Snapdragon 778G+", camera:"50+50 МП", screen:'6.55" OLED 2400x1080 120Гц', charging:"33 Вт", price:"469", storage:"256 ГБ", os:"Nothing OS 1.5", weight:"193 г", brand:"Nothing"},
+    {name:"Motorola Razr 40 Ultra", battery:"3800 mAh", materials:"Алюминий и стекло", processor:"Snapdragon 8+ Gen 1", camera:"12+13 МП", screen:'6.9" pOLED 2640x1080 165Гц', charging:"30 Вт", price:"999", storage:"256 ГБ", os:"Android 13", weight:"188 г", brand:"Motorola"},
+    {name:"Realme 11 Pro+", battery:"5000 mAh", materials:"Стекло и кожа", processor:"Dimensity 7050", camera:"200+8+2 МП", screen:'6.7" AMOLED 2412x1080 120Гц', charging:"100 Вт", price:"549", storage:"512 ГБ", os:"Realme UI 4", weight:"183 г", brand:"Realme"},
+    {name:"Vivo V29 Pro", battery:"4600 mAh", materials:"Стекло", processor:"Dimensity 8200", camera:"50+8+2 МП", screen:'6.78" AMOLED 2800x1260 120Гц', charging:"80 Вт", price:"599", storage:"256 ГБ", os:"Funtouch OS 13", weight:"186 г", brand:"Vivo"},
+    {name:"Oppo Reno 10 Pro+", battery:"4700 mAh", materials:"Стекло и металл", processor:"Snapdragon 8+ Gen 1", camera:"50+64+8 МП", screen:'6.74" OLED 2772x1240 120Гц', charging:"100 Вт", price:"699", storage:"512 ГБ", os:"ColorOS 13", weight:"194 г", brand:"Oppo"},
+    {name:"Asus Zenfone 10", battery:"4300 mAh", materials:"Стекло и металл", processor:"Snapdragon 8 Gen 2", camera:"50+13 МП", screen:'5.9" AMOLED 2400x1080 144Гц', charging:"30 Вт", price:"799", storage:"256 ГБ", os:"ZenUI", weight:"172 г", brand:"Asus"},
+    {name:"Honor 90", battery:"5000 mAh", materials:"Стекло", processor:"Snapdragon 7 Gen 1", camera:"200+12+2 МП", screen:'6.7" AMOLED 2664x1200 120Гц', charging:"66 Вт", price:"449", storage:"512 ГБ", os:"MagicOS 7", weight:"183 г", brand:"Honor"},
+    {name:"Sony Xperia 5 V", battery:"5000 mAh", materials:"Стекло и металл", processor:"Snapdragon 8 Gen 2", camera:"52+12 МП", screen:'6.1" OLED 2520x1080 120Гц', charging:"30 Вт", price:"999", storage:"256 ГБ", os:"Android 14", weight:"182 г", brand:"Sony"},
+    {name:"Huawei Mate 60 Pro", battery:"5000 mAh", materials:"Нано-кристалл", processor:"Kirin 9000S", camera:"50+48+12 МП", screen:'6.82" LTPO OLED 2720x1260 120Гц', charging:"88 Вт", price:"1199", storage:"512 ГБ", os:"HarmonyOS 4", weight:"225 г", brand:"Huawei"},
+    {name:"Nokia X30 5G", battery:"4200 mAh", materials:"Переработанный алюминий", processor:"Snapdragon 695", camera:"50+13 МП", screen:'6.43" AMOLED 2400x1080 90Гц', charging:"33 Вт", price:"399", storage:"256 ГБ", os:"Android 12", weight:"185 г", brand:"Nokia"},
+    {name:"Tecno Phantom V Fold", battery:"5000 mAh", materials:"Стекло и металл", processor:"Dimensity 9000+", camera:"50+50+13 МП", screen:'7.85" LTPO AMOLED 2296x2000 120Гц', charging:"45 Вт", price:"1099", storage:"512 ГБ", os:"HiOS 13", weight:"299 г", brand:"Tecno"},
+    {name:"Infinix Zero 30 5G", battery:"5000 mAh", materials:"Стекло", processor:"Dimensity 8020", camera:"108+13+2 МП", screen:'6.78" AMOLED 2400x1080 144Гц', charging:"68 Вт", price:"349", storage:"256 ГБ", os:"XOS 13", weight:"185 г", brand:"Infinix"},
+    {name:"Poco X5 Pro", battery:"5000 mAh", materials:"Стекло", processor:"Snapdragon 778G", camera:"108+8+2 МП", screen:'6.67" AMOLED 2400x1080 120Гц', charging:"67 Вт", price:"349", storage:"256 ГБ", os:"MIUI 14", weight:"181 г", brand:"Xiaomi"},
+    {name:"Lenovo Legion Y70", battery:"5100 mAh", materials:"Стекло и металл", processor:"Snapdragon 8+ Gen 1", camera:"50+13+2 МП", screen:'6.67" OLED 2400x1080 144Гц', charging:"68 Вт", price:"599", storage:"512 ГБ", os:"ZUI 14", weight:"209 г", brand:"Lenovo"},
+    {name:"Sharp Aquos R8 Pro", battery:"5000 mAh", materials:"Стекло и металл", processor:"Snapdragon 8 Gen 2", camera:"47+2 МП", screen:'6.6" Pro IGZO OLED 2730x1260 240Гц', charging:"27 Вт", price:"1199", storage:"256 ГБ", os:"Android 13", weight:"207 г", brand:"Sharp"},
+    {name:"LG Velvet 2 Pro", battery:"4300 mAh", materials:"Стекло", processor:"Snapdragon 888", camera:"64+16+8 МП", screen:'6.8" P-OLED 2460x1080 120Гц', charging:"25 Вт", price:"799", storage:"256 ГБ", os:"Android 13", weight:"180 г", brand:"LG"},
+    {name:"BlackBerry Key3", battery:"4000 mAh", materials:"Алюминий", processor:"Snapdragon 7 Gen 1", camera:"50+12 МП", screen:'6.5" IPS 2400x1080 90Гц', charging:"33 Вт", price:"699", storage:"256 ГБ", os:"Android 13", weight:"210 г", brand:"BlackBerry"},
+    {name:"Meizu 20 Pro", battery:"5000 mAh", materials:"Стекло и металл", processor:"Snapdragon 8 Gen 2", camera:"50+50+50 МП", screen:'6.81" AMOLED 3200x1440 120Гц', charging:"80 Вт", price:"799", storage:"512 ГБ", os:"Flyme 10", weight:"209 г", brand:"Meizu"},
+    {name:"iQOO 11 Pro", battery:"4700 mAh", materials:"Стекло и металл", processor:"Snapdragon 8 Gen 2", camera:"50+50+13 МП", screen:'6.78" E6 AMOLED 3200x1440 144Гц', charging:"200 Вт", price:"899", storage:"512 ГБ", os:"OriginOS 3", weight:"210 г", brand:"iQOO"},
+    {name:"Nubia Red Magic 8 Pro", battery:"6000 mAh", materials:"Стекло и металл", processor:"Snapdragon 8 Gen 2", camera:"50+8+2 МП", screen:'6.8" AMOLED 2480x1116 120Гц', charging:"65 Вт", price:"799", storage:"512 ГБ", os:"Red Magic OS", weight:"228 г", brand:"ZTE"},
+    {name:"Realme Narzo 60 Pro", battery:"5000 mAh", materials:"Стекло", processor:"Dimensity 7050", camera:"100+2 МП", screen:'6.7" AMOLED 2412x1080 120Гц', charging:"67 Вт", price:"299", storage:"256 ГБ", os:"Realme UI 4", weight:"191 г", brand:"Realme"},
+    {name:"Xiaomi Redmi K60 Ultra", battery:"5000 mAh", materials:"Стекло", processor:"Dimensity 9200+", camera:"50+8+2 МП", screen:'6.67" OLED 2712x1220 144Гц', charging:"120 Вт", price:"499", storage:"512 ГБ", os:"HyperOS", weight:"204 г", brand:"Xiaomi"},
+    {name:"Samsung Galaxy M54", battery:"6000 mAh", materials:"Стекло", processor:"Exynos 1380", camera:"108+8+2 МП", screen:'6.7" Super AMOLED 2400x1080 120Гц', charging:"25 Вт", price:"399", storage:"256 ГБ", os:"Android 14", weight:"199 г", brand:"Samsung"},
+    {name:"Google Pixel 7a", battery:"4385 mAh", materials:"Поликарбонат", processor:"Tensor G2", camera:"64+13 МП", screen:'6.1" OLED 2400x1080 90Гц', charging:"18 Вт", price:"499", storage:"128 ГБ", os:"Android 14", weight:"193 г", brand:"Google"},
+    {name:"OnePlus Nord CE 3 Lite", battery:"5000 mAh", materials:"Пластик", processor:"Snapdragon 695", camera:"108+2+2 МП", screen:'6.72" IPS 2400x1080 120Гц', charging:"67 Вт", price:"299", storage:"256 ГБ", os:"OxygenOS 13", weight:"195 г", brand:"OnePlus"},
+    {name:"Apple iPhone 14 Plus", battery:"4323 mAh", materials:"Алюминий", processor:"A15 Bionic", camera:"12+12 МП", screen:'6.7" Super Retina XDR 2778x1284 60Гц', charging:"20 Вт", price:"899", storage:"256 ГБ", os:"iOS 16", weight:"203 г", brand:"Apple"},
+    {name:"Samsung Galaxy Z Flip5", battery:"3700 mAh", materials:"Алюминий", processor:"Snapdragon 8 Gen 2", camera:"12+12 МП", screen:'6.7" Dynamic AMOLED 2640x1080 120Гц', charging:"25 Вт", price:"999", storage:"256 ГБ", os:"Android 13", weight:"187 г", brand:"Samsung"},
+    {name:"Xiaomi Mi Mix Fold 3", battery:"4800 mAh", materials:"Керамика и титан", processor:"Snapdragon 8 Gen 2", camera:"50+50+10 МП", screen:'8.03" LTPO OLED 2160x1914 120Гц', charging:"67 Вт", price:"1599", storage:"512 ГБ", os:"HyperOS", weight:"259 г", brand:"Xiaomi"},
+    {name:"Motorola Edge 30 Ultra", battery:"4610 mAh", materials:"Стекло и металл", processor:"Snapdragon 8+ Gen 1", camera:"200+50+12 МП", screen:'6.67" pOLED 2400x1080 144Гц', charging:"125 Вт", price:"799", storage:"512 ГБ", os:"Android 13", weight:"198 г", brand:"Motorola"},
+    {name:"Realme GT Neo 5 SE", battery:"5500 mAh", materials:"Стекло", processor:"Snapdragon 7+ Gen 2", camera:"64+8+2 МП", screen:'6.74" AMOLED 2772x1240 144Гц', charging:"100 Вт", price:"399", storage:"512 ГБ", os:"Realme UI 4", weight:"193 г", brand:"Realme"},
+    {name:"Vivo iQOO Z7 Pro", battery:"4600 mAh", materials:"Стекло", processor:"Dimensity 7200", camera:"64+2 МП", screen:'6.78" AMOLED 2400x1080 120Гц', charging:"66 Вт", price:"349", storage:"256 ГБ", os:"Funtouch OS 13", weight:"190 г", brand:"Vivo"},
+    {name:"Oppo A98 5G", battery:"5000 mAh", materials:"Пластик", processor:"Snapdragon 695", camera:"64+2+2 МП", screen:'6.72" IPS 2400x1080 120Гц', charging:"67 Вт", price:"299", storage:"256 ГБ", os:"ColorOS 13", weight:"192 г", brand:"Oppo"},
+    {name:"Asus ROG Phone 7 Ultimate", battery:"6000 mAh", materials:"Стекло и металл", processor:"Snapdragon 8 Gen 2", camera:"50+13+8 МП", screen:'6.78" AMOLED 2448x1080 165Гц', charging:"65 Вт", price:"1399", storage:"512 ГБ", os:"ROG UI", weight:"239 г", brand:"Asus"},
+    {name:"Nothing Phone 2a", battery:"5000 mAh", materials:"Пластик", processor:"Dimensity 7200", camera:"64+8 МП", screen:'6.7" OLED 2412x1080 120Гц', charging:"45 Вт", price:"399", storage:"256 ГБ", os:"Nothing OS 2.5", weight:"190 г", brand:"Nothing"}
+];
+
 let currentDifficulty = 'easy';
 let gamesPlayed = 0;
 
@@ -247,11 +516,14 @@ document.addEventListener('DOMContentLoaded', () => {
     loadStatistics();
     setupDifficultySelector();
     setupMusic();
+    renderPhonesGrid();
+    setupSearch();
 });
 
 function loadStatistics() {
     gamesPlayed = parseInt(localStorage.getItem('gamesPlayed')) || 0;
     document.getElementById('gamesPlayed').textContent = gamesPlayed;
+    document.getElementById('phoneCount').textContent = phones.length;
 }
 
 function setupDifficultySelector() {
@@ -275,6 +547,103 @@ function setupDifficultySelector() {
     
     const savedDifficulty = localStorage.getItem('botDifficulty') || 'easy';
     document.querySelector(`[data-difficulty="${savedDifficulty}"]`).click();
+}
+
+function renderPhonesGrid(filter = '') {
+    const grid = document.getElementById('phonesGrid');
+    grid.innerHTML = '';
+    
+    const filteredPhones = phones.filter(phone => 
+        phone.name.toLowerCase().includes(filter.toLowerCase()) || 
+        phone.brand.toLowerCase().includes(filter.toLowerCase()) ||
+        phone.processor.toLowerCase().includes(filter.toLowerCase())
+    );
+    
+    filteredPhones.forEach(phone => {
+        const card = document.createElement('div');
+        card.className = 'phone-card';
+        card.innerHTML = `
+            <div class="phone-name">${phone.name}</div>
+            <div class="phone-brand">${phone.brand}</div>
+            <div class="phone-specs">
+                <div>${phone.processor}</div>
+                <div>${phone.camera}</div>
+                <div>${phone.battery}</div>
+                <div>${phone.screen}</div>
+            </div>
+        `;
+        card.addEventListener('click', () => showPhoneDetails(phone));
+        grid.appendChild(card);
+    });
+}
+
+function setupSearch() {
+    const searchInput = document.getElementById('phoneSearch');
+    searchInput.addEventListener('input', (e) => {
+        renderPhonesGrid(e.target.value);
+    });
+}
+
+function showPhoneDetails(phone) {
+    const modal = document.getElementById('phoneModal');
+    document.getElementById('modalPhoneName').textContent = phone.name;
+    document.getElementById('modalPhoneBrand').textContent = phone.brand;
+    
+    const details = document.getElementById('modalPhoneDetails');
+    details.innerHTML = `
+        <div class="detail-item">
+            <div class="detail-label">Процессор</div>
+            <div class="detail-value">${phone.processor}</div>
+        </div>
+        <div class="detail-item">
+            <div class="detail-label">Аккумулятор</div>
+            <div class="detail-value">${phone.battery}</div>
+        </div>
+        <div class="detail-item">
+            <div class="detail-label">Камера</div>
+            <div class="detail-value">${phone.camera}</div>
+        </div>
+        <div class="detail-item">
+            <div class="detail-label">Экран</div>
+            <div class="detail-value">${phone.screen}</div>
+        </div>
+        <div class="detail-item">
+            <div class="detail-label">Материалы</div>
+            <div class="detail-value">${phone.materials}</div>
+        </div>
+        <div class="detail-item">
+            <div class="detail-label">Зарядка</div>
+            <div class="detail-value">${phone.charging}</div>
+        </div>
+        <div class="detail-item">
+            <div class="detail-label">Цена</div>
+            <div class="detail-value">$${phone.price}</div>
+        </div>
+        <div class="detail-item">
+            <div class="detail-label">Память</div>
+            <div class="detail-value">${phone.storage}</div>
+        </div>
+        <div class="detail-item">
+            <div class="detail-label">ОС</div>
+            <div class="detail-value">${phone.os}</div>
+        </div>
+        <div class="detail-item">
+            <div class="detail-label">Вес</div>
+            <div class="detail-value">${phone.weight}</div>
+        </div>
+        <div class="detail-item">
+            <div class="detail-label">Бренд</div>
+            <div class="detail-value">${phone.brand}</div>
+        </div>
+    `;
+    
+    modal.style.display = 'block';
+    document.body.style.overflow = 'hidden';
+}
+
+function closePhoneModal() {
+    document.getElementById('phoneModal').style.display = 'none';
+    document.body.style.overflow = 'auto';
 }
 
 function startBotGame() {
@@ -327,6 +696,12 @@ function setupMusic() {
         localStorage.setItem('musicEnabled', musicEnabled);
     });
 }
+
+document.addEventListener('keydown', (e) => {
+    if (e.key === 'Escape') {
+        closePhoneModal();
+    }
+});
 </script>
 </body>
 </html>
