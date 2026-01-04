@@ -87,12 +87,6 @@
     font-size: 14px;
     color: var(--text-secondary);
 }
-.bot-thinking {
-    text-align: center;
-    padding: 20px;
-    color: #a0a0ff;
-    font-style: italic;
-}
 .attributes-grid {
     display: grid;
     grid-template-columns: repeat(auto-fill, minmax(140px, 1fr));
@@ -164,57 +158,6 @@
     opacity: 0.5;
     cursor: not-allowed;
 }
-.game-log {
-    grid-column: 1 / -1;
-    background: rgba(10, 10, 24, 0.9);
-    border: 1px solid var(--accent-light);
-    border-radius: 15px;
-    padding: 20px;
-    margin-top: 30px;
-    max-height: 200px;
-    overflow-y: auto;
-}
-.log-title {
-    color: var(--accent);
-    margin-bottom: 15px;
-    font-size: 18px;
-}
-.log-content {
-    font-size: 14px;
-    line-height: 1.6;
-    color: var(--text-secondary);
-}
-.log-item {
-    margin-bottom: 8px;
-    padding: 8px;
-    border-radius: 5px;
-    background: rgba(16, 16, 38, 0.5);
-    border-left: 3px solid var(--accent);
-}
-.log-item.bot {
-    border-left-color: #8a2be2;
-    background: rgba(138, 43, 226, 0.1);
-}
-.bot-stats {
-    margin-top: 20px;
-    padding: 15px;
-    background: rgba(138, 43, 226, 0.1);
-    border-radius: 10px;
-    border: 1px solid rgba(138, 43, 226, 0.3);
-}
-.stat-item {
-    display: flex;
-    justify-content: space-between;
-    margin-bottom: 8px;
-    font-size: 14px;
-}
-.stat-label {
-    color: #a0a0ff;
-}
-.stat-value {
-    color: #8a2be2;
-    font-weight: bold;
-}
 .game-controls {
     grid-column: 1 / -1;
     display: flex;
@@ -275,6 +218,69 @@
     border: 2px solid var(--accent);
     animation: pulse 2s infinite;
 }
+.action-log {
+    grid-column: 1 / -1;
+    background: rgba(10, 10, 24, 0.9);
+    border: 1px solid var(--accent-light);
+    border-radius: 15px;
+    padding: 20px;
+    margin-top: 20px;
+    min-height: 80px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+.action-message {
+    font-size: 18px;
+    color: var(--text-primary);
+    text-align: center;
+    width: 100%;
+}
+.action-message.player {
+    color: var(--accent);
+}
+.action-message.bot {
+    color: #8a2be2;
+}
+.known-attributes-sidebar {
+    margin-top: 20px;
+    padding: 15px;
+    background: rgba(138, 43, 226, 0.1);
+    border-radius: 10px;
+    border: 1px solid rgba(138, 43, 226, 0.3);
+}
+.known-attributes-title {
+    font-size: 16px;
+    color: #8a2be2;
+    margin-bottom: 15px;
+    font-weight: bold;
+    text-align: center;
+}
+.known-attributes-list {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+}
+.known-attribute-item {
+    display: flex;
+    justify-content: space-between;
+    padding: 8px;
+    background: rgba(138, 43, 226, 0.15);
+    border-radius: 6px;
+    border-left: 3px solid #8a2be2;
+}
+.attribute-name {
+    color: #a0a0ff;
+    font-size: 13px;
+}
+.attribute-value {
+    color: #8a2be2;
+    font-weight: bold;
+    font-size: 13px;
+    text-align: right;
+    max-width: 60%;
+    word-break: break-word;
+}
 .modal-overlay {
     display: none;
     position: fixed;
@@ -322,6 +328,84 @@
     text-align: left;
     border: 1px solid rgba(138, 43, 226, 0.3);
 }
+.audit-log-container {
+    grid-column: 1 / -1;
+    background: rgba(10, 10, 24, 0.9);
+    border: 1px solid var(--accent-light);
+    border-radius: 15px;
+    padding: 20px;
+    margin-top: 20px;
+    max-height: 250px;
+    overflow-y: auto;
+}
+.audit-title {
+    font-size: 18px;
+    color: var(--accent);
+    margin-bottom: 15px;
+    font-weight: bold;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+.audit-clear-btn {
+    background: rgba(138, 43, 226, 0.2);
+    border: 1px solid #8a2be2;
+    color: #8a2be2;
+    padding: 5px 15px;
+    border-radius: 15px;
+    cursor: pointer;
+    font-size: 12px;
+    transition: all 0.3s;
+}
+.audit-clear-btn:hover {
+    background: rgba(138, 43, 226, 0.4);
+}
+.audit-content {
+    font-size: 13px;
+    line-height: 1.4;
+    color: var(--text-secondary);
+}
+.audit-item {
+    margin-bottom: 8px;
+    padding: 8px;
+    border-radius: 6px;
+    background: rgba(16, 16, 38, 0.5);
+    border-left: 3px solid var(--accent);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+.audit-item.bot {
+    border-left-color: #8a2be2;
+    background: rgba(138, 43, 226, 0.1);
+}
+.audit-time {
+    color: #888;
+    font-size: 11px;
+    min-width: 45px;
+}
+.audit-player {
+    color: var(--accent);
+    font-weight: bold;
+    min-width: 60px;
+}
+.audit-action {
+    flex-grow: 1;
+    margin: 0 10px;
+}
+.audit-action.false {
+    color: #ff4444;
+    text-decoration: line-through;
+}
+.audit-round {
+    color: #8a2be2;
+    font-weight: bold;
+    min-width: 30px;
+    text-align: center;
+    background: rgba(138, 43, 226, 0.2);
+    padding: 2px 6px;
+    border-radius: 10px;
+}
 @media (max-width: 900px) {
     .bot-game-container {
         grid-template-columns: 1fr;
@@ -332,12 +416,21 @@
     .attributes-grid {
         grid-template-columns: repeat(auto-fill, minmax(120px, 1fr));
     }
+    .audit-item {
+        flex-wrap: wrap;
+        font-size: 12px;
+    }
+    .audit-time {
+        min-width: 40px;
+    }
+    .audit-player {
+        min-width: 50px;
+    }
 }
 </style>
 </head>
 <body>
 <button class="back-btn" onclick="window.location.href='index.html'">← Назад</button>
-
 <div class="container">
     <h1>Phone Duel</h1>
     
@@ -362,7 +455,7 @@
                     <input type="text" class="guess-input" id="playerGuess" placeholder="Угадайте телефон бота..." autocomplete="off">
                     <div class="suggestion-list" id="playerSuggestions"></div>
                 </div>
-                <button class="guess-btn" id="playerGuessBtn" disabled>УГАДАТЬ</button>
+                <button class="guess-btn" id="playerGuessBtn" disabled>УГАДАТЬ (нужно 2 характеристики)</button>
             </div>
         </div>
         
@@ -377,33 +470,34 @@
                 <div class="phone-details" id="botPhoneDetails">???</div>
             </div>
             
-            <div class="bot-thinking" id="botThinking">
-                Бот анализирует ходы...
-            </div>
-            
-            <div class="bot-stats">
-                <div class="stat-item">
-                    <span class="stat-label">Известных характеристик:</span>
-                    <span class="stat-value" id="botKnownCount">0</span>
-                </div>
-                <div class="stat-item">
-                    <span class="stat-label">Возможных телефонов:</span>
-                    <span class="stat-value" id="botPossibleCount">24</span>
-                </div>
-                <div class="stat-item">
-                    <span class="stat-label">Вероятность угадать:</span>
-                    <span class="stat-value" id="botProbability">0%</span>
+            <div class="known-attributes-sidebar">
+                <div class="known-attributes-title">Известные характеристики бота:</div>
+                <div class="known-attributes-list" id="knownAttributesList">
+                    <div class="no-attributes" style="color: #8888ff; font-style: italic; text-align: center; padding: 10px;">
+                        Еще не раскрыто
+                    </div>
                 </div>
             </div>
         </div>
         
-        <div class="game-log">
-            <div class="log-title">Ход игры</div>
-            <div class="log-content" id="gameLog"></div>
+        <div class="audit-log-container">
+            <div class="audit-title">
+                <span>Журнал аудита вопросов</span>
+                <button class="audit-clear-btn" onclick="clearAuditLog()">Очистить</button>
+            </div>
+            <div class="audit-content" id="auditLog">
+                <div style="color: #8888ff; font-style: italic; text-align: center; padding: 20px;">
+                    Здесь будет отображаться история всех вопросов
+                </div>
+            </div>
+        </div>
+        
+        <div class="action-log">
+            <div class="action-message" id="actionMessage">Начните игру, выбрав характеристику</div>
         </div>
         
         <div class="game-controls">
-            <button class="control-btn next-turn" id="nextTurnBtn">ХОД БОТА →</button>
+            <button class="control-btn next-turn" id="nextTurnBtn" disabled>ХОД БОТА →</button>
             <button class="control-btn restart" onclick="restartGame()">НОВАЯ ИГРА</button>
             <button class="control-btn" onclick="window.location.href='index.html'" style="background: linear-gradient(90deg, #666, #999); color: white;">
                 В МЕНЮ
@@ -433,11 +527,25 @@
 <script>
 let gameState = {
     player: { name: 'Игрок', phone: null, usedAttributes: new Set(), knownAttributes: {}, isActive: true },
-    bot: { phone: null, usedAttributes: new Set(), knownAttributes: {}, possiblePhones: [], difficulty: 'easy', isActive: false },
+    bot: { 
+        phone: null, 
+        usedAttributes: new Set(), 
+        knownAttributes: {}, 
+        possiblePhones: [], 
+        difficulty: 'easy',
+        isActive: false,
+        handicap: {
+            randomQuestions: 0,
+            skipTurns: 0,
+            falseInfo: 0,
+            limitedMemory: false
+        }
+    },
     currentTurn: 'player',
     round: 1,
-    maxRounds: 15,
-    gameActive: true
+    maxRounds: 10,
+    gameActive: true,
+    auditLog: []
 };
 
 document.addEventListener('DOMContentLoaded', () => {
@@ -452,21 +560,67 @@ document.addEventListener('DOMContentLoaded', () => {
     gameState.player.name = playerName;
     gameState.bot.difficulty = difficulty;
     
+    applyBotHandicap();
     startNewGame();
     setupEventListeners();
     setupMusic();
     
-    addToLog('Началась дуэль с ботом!');
+    showActionMessage('Началась дуэль с ботом!', 'player');
+    addToAuditLog('system', 'Начало игры', 'Игра началась');
 });
+
+function applyBotHandicap() {
+    switch(gameState.bot.difficulty) {
+        case 'easy':
+            gameState.bot.handicap = {
+                randomQuestions: 3,
+                skipTurns: 2,
+                falseInfo: 1,
+                limitedMemory: true
+            };
+            gameState.maxRounds = 10;
+            break;
+        case 'medium':
+            gameState.bot.handicap = {
+                randomQuestions: 1,
+                skipTurns: 1,
+                falseInfo: 0,
+                limitedMemory: false
+            };
+            gameState.maxRounds = 12;
+            break;
+        case 'hard':
+            gameState.bot.handicap = {
+                randomQuestions: 0,
+                skipTurns: 0,
+                falseInfo: 0,
+                limitedMemory: false
+            };
+            gameState.maxRounds = 15;
+            break;
+    }
+}
 
 function startNewGame() {
     gameState = {
         player: { name: gameState.player.name, phone: null, usedAttributes: new Set(), knownAttributes: {}, isActive: true },
-        bot: { phone: null, usedAttributes: new Set(), knownAttributes: {}, possiblePhones: [...phones], difficulty: gameState.bot.difficulty, isActive: false },
+        bot: { 
+            phone: null, 
+            usedAttributes: new Set(), 
+            knownAttributes: {}, 
+            possiblePhones: [...phones], 
+            difficulty: gameState.bot.difficulty,
+            isActive: false,
+            handicap: gameState.bot.handicap,
+            falseInfoGiven: 0,
+            skippedTurns: 0,
+            isFalseInfo: false
+        },
         currentTurn: 'player',
         round: 1,
-        maxRounds: 15,
-        gameActive: true
+        maxRounds: gameState.maxRounds,
+        gameActive: true,
+        auditLog: []
     };
     
     gameState.player.phone = getRandomPhone();
@@ -475,11 +629,16 @@ function startNewGame() {
     } while (gameState.bot.phone.name === gameState.player.phone.name);
     
     updatePlayerPhoneDisplay();
-    updateBotStats();
+    updateKnownAttributesList();
     createAttributeButtons();
     updateTurnIndicator();
+    updateAuditLog();
+    updateGuessButtonState(); // Добавили обновление состояния кнопки
     
     setPlayerTurn(true);
+    document.getElementById('playerGuess').value = '';
+    document.getElementById('actionMessage').textContent = 'Выберите характеристику для запроса';
+    addToAuditLog('system', 'Новая игра', 'Телефоны распределены');
 }
 
 function updatePlayerPhoneDisplay() {
@@ -501,31 +660,46 @@ function updatePlayerPhoneDisplay() {
     `;
 }
 
-function updateBotStats() {
-    const knownCount = Object.keys(gameState.bot.knownAttributes).length;
-    const possibleCount = gameState.bot.possiblePhones.length;
-    const probability = possibleCount > 0 ? Math.round((1 / possibleCount) * 100) : 0;
+function updateKnownAttributesList() {
+    const container = document.getElementById('knownAttributesList');
+    const knownAttrs = gameState.player.knownAttributes;
     
-    document.getElementById('botKnownCount').textContent = knownCount;
-    document.getElementById('botPossibleCount').textContent = possibleCount;
-    document.getElementById('botProbability').textContent = `${probability}%`;
+    if (Object.keys(knownAttrs).length === 0) {
+        container.innerHTML = '<div class="no-attributes" style="color: #8888ff; font-style: italic; text-align: center; padding: 10px;">Еще не раскрыто</div>';
+        return;
+    }
     
-    updateBotPhoneDisplay();
+    container.innerHTML = '';
+    
+    Object.entries(knownAttrs).forEach(([attr, value]) => {
+        const item = document.createElement('div');
+        item.className = 'known-attribute-item';
+        item.innerHTML = `
+            <span class="attribute-name">${attributes[attr]}:</span>
+            <span class="attribute-value">${value}</span>
+        `;
+        container.appendChild(item);
+    });
 }
 
-function updateBotPhoneDisplay() {
-    const details = document.getElementById('botPhoneDetails');
-    let html = '';
+function updateGuessButtonState() {
+    const guessBtn = document.getElementById('playerGuessBtn');
+    const knownCount = Object.keys(gameState.player.knownAttributes).length;
+    const neededCount = 2; // Уменьшили с 3 до 2
     
-    for (const [attr, value] of Object.entries(gameState.bot.knownAttributes)) {
-        html += `<div><strong>${attributes[attr]}:</strong> ${value}</div>`;
+    if (knownCount >= neededCount) {
+        guessBtn.disabled = false;
+        guessBtn.textContent = 'УГАДАТЬ';
+    } else {
+        guessBtn.disabled = true;
+        guessBtn.textContent = `УГАДАТЬ (нужно еще ${neededCount - knownCount} характеристики)`;
     }
-    
-    if (!html) {
-        html = '<div style="color: #8888ff; font-style: italic;">Еще не раскрыто</div>';
-    }
-    
-    details.innerHTML = html;
+}
+
+function showActionMessage(message, type = 'player') {
+    const actionMessage = document.getElementById('actionMessage');
+    actionMessage.textContent = message;
+    actionMessage.className = `action-message ${type}`;
 }
 
 function createAttributeButtons() {
@@ -559,13 +733,12 @@ function askBotAttribute(attr) {
     document.querySelector(`[data-attr="${attr}"]`).classList.add('used');
     document.querySelector(`[data-attr="${attr}"]`).disabled = true;
     
-    addToLog(`Вы узнали ${attributes[attr]} бота: ${value}`);
+    showActionMessage(`Вы узнали ${attributes[attr]} бота: ${value}`, 'player');
+    updateKnownAttributesList();
+    addToAuditLog('player', `Спросил ${attributes[attr]}`, value);
     
-    if (Object.keys(gameState.player.knownAttributes).length >= 3) {
-        document.getElementById('playerGuessBtn').disabled = false;
-    }
-    
-    updateBotStats();
+    // Обновляем состояние кнопки угадать
+    updateGuessButtonState();
     
     setPlayerTurn(false);
     document.getElementById('turnIndicator').textContent = 'Ход бота...';
@@ -576,44 +749,74 @@ function askBotAttribute(attr) {
 function botTurn() {
     if (!gameState.gameActive) return;
     
+    if (gameState.bot.skippedTurns < gameState.bot.handicap.skipTurns && Math.random() > 0.7) {
+        gameState.bot.skippedTurns++;
+        showActionMessage(`Бот пропускает ход (${gameState.bot.skippedTurns}/${gameState.bot.handicap.skipTurns})`, 'bot');
+        addToAuditLog('bot', 'Пропуск хода', `Ход пропущен`);
+        nextRound();
+        return;
+    }
+    
     let chosenAttr;
     const availableAttrs = Object.keys(attributes).filter(a => !gameState.bot.usedAttributes.has(a));
     
     if (availableAttrs.length === 0) return;
     
-    switch(gameState.bot.difficulty) {
-        case 'easy':
-            chosenAttr = availableAttrs[Math.floor(Math.random() * availableAttrs.length)];
-            break;
-        case 'medium':
-            const importantAttrs = ['processor', 'os', 'brand', 'price', 'camera'];
-            const importantAvailable = availableAttrs.filter(a => importantAttrs.includes(a));
-            chosenAttr = importantAvailable.length > 0 ? 
-                importantAvailable[Math.floor(Math.random() * importantAvailable.length)] :
-                availableAttrs[Math.floor(Math.random() * availableAttrs.length)];
-            break;
-        case 'hard':
-            chosenAttr = getSmartBotAttribute();
-            break;
-        default:
-            chosenAttr = availableAttrs[Math.floor(Math.random() * availableAttrs.length)];
+    const shouldAskRandom = gameState.bot.handicap.randomQuestions > 0 && 
+                           Math.random() > (1 - (gameState.bot.handicap.randomQuestions / 10));
+    
+    if (shouldAskRandom) {
+        chosenAttr = availableAttrs[Math.floor(Math.random() * availableAttrs.length)];
+        showActionMessage(`Бот задает случайный вопрос!`, 'bot');
+    } else {
+        chosenAttr = getWorstPossibleAttribute(availableAttrs);
     }
     
     gameState.bot.usedAttributes.add(chosenAttr);
     
-    const value = gameState.player.phone[chosenAttr];
+    let value = gameState.player.phone[chosenAttr];
+    let isFalseInfo = false;
+    
+    if (gameState.bot.handicap.falseInfo > 0 && 
+        gameState.bot.falseInfoGiven < gameState.bot.handicap.falseInfo &&
+        Math.random() > 0.6) {
+        
+        const similarPhones = phones.filter(p => p[chosenAttr] !== value);
+        if (similarPhones.length > 0) {
+            const falsePhone = similarPhones[Math.floor(Math.random() * similarPhones.length)];
+            value = falsePhone[chosenAttr];
+            gameState.bot.falseInfoGiven++;
+            isFalseInfo = true;
+            showActionMessage(`Бот дает неверную информацию! (${gameState.bot.falseInfoGiven}/${gameState.bot.handicap.falseInfo})`, 'bot');
+        }
+    }
+    
     gameState.bot.knownAttributes[chosenAttr] = value;
+    gameState.bot.isFalseInfo = isFalseInfo;
     
-    gameState.bot.possiblePhones = gameState.bot.possiblePhones.filter(phone => phone[chosenAttr] === value);
+    if (gameState.bot.handicap.limitedMemory) {
+        const previousCount = gameState.bot.possiblePhones.length;
+        gameState.bot.possiblePhones = gameState.bot.possiblePhones.filter(phone => phone[chosenAttr] === value);
+        
+        if (gameState.bot.possiblePhones.length === 0) {
+            gameState.bot.possiblePhones = phones.filter(phone => phone[chosenAttr] === value);
+            showActionMessage(`Бот забыл предыдущие данные и начал заново!`, 'bot');
+        }
+    } else {
+        gameState.bot.possiblePhones = gameState.bot.possiblePhones.filter(phone => phone[chosenAttr] === value);
+    }
     
-    addToLog(`Бот спрашивает ${attributes[chosenAttr]}: ${value}`, 'bot');
-    addToLog(`У бота осталось ${gameState.bot.possiblePhones.length} возможных телефонов`, 'bot');
+    const trueValue = gameState.player.phone[chosenAttr];
+    const auditMessage = isFalseInfo ? 
+        `${value} (неверно, на самом деле: ${trueValue})` : 
+        value;
     
-    updateBotStats();
+    showActionMessage(`Бот спрашивает ${attributes[chosenAttr]}: ${value}`, 'bot');
+    addToAuditLog('bot', `Спросил ${attributes[chosenAttr]}`, auditMessage, isFalseInfo);
     
     if (gameState.bot.possiblePhones.length === 1) {
         setTimeout(() => botMakeGuess(), 1000);
-    } else if (gameState.bot.possiblePhones.length <= 3 && Math.random() > 0.7) {
+    } else if (gameState.bot.possiblePhones.length <= 2 && Math.random() > 0.8) {
         setTimeout(() => botMakeGuess(), 1000);
     } else {
         gameState.round++;
@@ -625,15 +828,9 @@ function botTurn() {
     }
 }
 
-function getSmartBotAttribute() {
-    const availableAttrs = Object.keys(attributes).filter(a => !gameState.bot.usedAttributes.has(a));
-    
-    if (gameState.bot.possiblePhones.length <= 5) {
-        return availableAttrs[Math.floor(Math.random() * availableAttrs.length)];
-    }
-    
-    let bestAttr = availableAttrs[0];
-    let bestScore = 0;
+function getWorstPossibleAttribute(availableAttrs) {
+    let worstAttr = availableAttrs[0];
+    let worstScore = Infinity;
     
     for (const attr of availableAttrs) {
         const values = {};
@@ -642,43 +839,102 @@ function getSmartBotAttribute() {
             values[value] = (values[value] || 0) + 1;
         });
         
-        const score = Object.values(values).reduce((sum, count) => {
-            return sum + Math.abs(count - gameState.bot.possiblePhones.length / Object.keys(values).length);
-        }, 0);
+        const uniqueValues = Object.keys(values).length;
+        if (uniqueValues === 1) continue;
         
-        if (score > bestScore) {
-            bestScore = score;
-            bestAttr = attr;
+        const maxGroup = Math.max(...Object.values(values));
+        const eliminationScore = gameState.bot.possiblePhones.length - maxGroup;
+        
+        const attributeImportance = {
+            'processor': 10, 'os': 10, 'brand': 9, 
+            'price': 8, 'camera': 8, 'screen': 7,
+            'battery': 6, 'storage': 6, 'weight': 5,
+            'materials': 5, 'charging': 4
+        }[attr] || 3;
+        
+        const score = eliminationScore * attributeImportance;
+        
+        if (score < worstScore) {
+            worstScore = score;
+            worstAttr = attr;
         }
     }
     
-    return bestAttr;
+    if (worstScore === Infinity) {
+        return availableAttrs[Math.floor(Math.random() * availableAttrs.length)];
+    }
+    
+    return worstAttr;
 }
 
 function botMakeGuess() {
     if (!gameState.gameActive) return;
     
     let guess;
+    let confidence = 0.3;
+    
     if (gameState.bot.possiblePhones.length === 1) {
         guess = gameState.bot.possiblePhones[0];
+        confidence = 0.9;
     } else {
-        guess = gameState.bot.possiblePhones[Math.floor(Math.random() * gameState.bot.possiblePhones.length)];
+        const randomPhone = gameState.bot.possiblePhones[Math.floor(Math.random() * gameState.bot.possiblePhones.length)];
+        
+        if (gameState.bot.handicap.limitedMemory && gameState.bot.possiblePhones.length > 5) {
+            const wrongPhones = phones.filter(p => !gameState.bot.possiblePhones.includes(p));
+            if (wrongPhones.length > 0 && Math.random() > 0.7) {
+                guess = wrongPhones[Math.floor(Math.random() * wrongPhones.length)];
+                confidence = 0.1;
+            } else {
+                guess = randomPhone;
+                confidence = 0.3;
+            }
+        } else {
+            guess = randomPhone;
+            confidence = 1 / gameState.bot.possiblePhones.length;
+        }
     }
     
-    if (guess.name === gameState.player.phone.name) {
+    const shouldGuessWrong = gameState.bot.difficulty === 'easy' && Math.random() > 0.5 && gameState.round < 5;
+    
+    if (shouldGuessWrong) {
+        const wrongPhones = phones.filter(p => p.name !== gameState.player.phone.name);
+        guess = wrongPhones[Math.floor(Math.random() * wrongPhones.length)];
+        confidence = 0.1;
+    }
+    
+    if (guess.name === gameState.player.phone.name && !shouldGuessWrong) {
         gameState.gameActive = false;
-        addToLog(`Бот угадал ваш телефон: ${guess.name}!`, 'bot');
+        showActionMessage(`Бот угадал ваш телефон: ${guess.name}!`, 'bot');
+        addToAuditLog('bot', 'Угадал телефон', guess.name);
         showResult(false);
     } else {
-        addToLog(`Бот пытался угадать: ${guess.name} (неправильно!)`, 'bot');
-        gameState.bot.possiblePhones = gameState.bot.possiblePhones.filter(phone => phone.name !== guess.name);
-        updateBotStats();
+        const message = shouldGuessWrong ? 
+            `${guess.name} (специально неверно!)` : 
+            `${guess.name} (неправильно!)`;
+        
+        showActionMessage(`Бот пытался угадать: ${message}`, 'bot');
+        addToAuditLog('bot', 'Пытался угадать', message);
+        
+        if (!shouldGuessWrong) {
+            gameState.bot.possiblePhones = gameState.bot.possiblePhones.filter(phone => phone.name !== guess.name);
+        }
+        
         gameState.round++;
         if (gameState.round > gameState.maxRounds) {
             endGameByRounds();
         } else {
             setPlayerTurn(true);
         }
+    }
+}
+
+function nextRound() {
+    gameState.round++;
+    
+    if (gameState.round > gameState.maxRounds) {
+        endGameByRounds();
+    } else {
+        setPlayerTurn(true);
     }
 }
 
@@ -688,18 +944,24 @@ function setPlayerTurn(isPlayerTurn) {
     
     const indicator = document.getElementById('turnIndicator');
     const nextBtn = document.getElementById('nextTurnBtn');
+    const guessBtn = document.getElementById('playerGuessBtn');
     
     if (isPlayerTurn) {
         indicator.textContent = 'Ваш ход!';
         indicator.style.borderColor = 'var(--accent)';
         nextBtn.disabled = true;
         document.querySelectorAll('.attr-btn:not(.used)').forEach(btn => { btn.disabled = false; });
+        showActionMessage('Ваш ход. Выберите характеристику или угадайте телефон', 'player');
+        
+        // Обновляем состояние кнопки угадать при начале хода игрока
+        updateGuessButtonState();
+        
     } else {
         indicator.textContent = 'Ход бота...';
         indicator.style.borderColor = '#8a2be2';
         nextBtn.disabled = true;
         document.querySelectorAll('.attr-btn').forEach(btn => { btn.disabled = true; });
-        document.getElementById('playerGuessBtn').disabled = true;
+        guessBtn.disabled = true;
     }
     
     document.getElementById('playerTurnStatus').textContent = isPlayerTurn ? 'ХОДИТ' : 'ОЖИДАЕТ';
@@ -709,6 +971,58 @@ function updateTurnIndicator() {
     const indicator = document.getElementById('turnIndicator');
     indicator.textContent = gameState.currentTurn === 'player' ? 'Ваш ход!' : 'Ход бота...';
     indicator.style.borderColor = gameState.currentTurn === 'player' ? 'var(--accent)' : '#8a2be2';
+}
+
+function addToAuditLog(who, action, details, isFalse = false) {
+    const time = new Date().toLocaleTimeString([], {hour: '2-digit', minute:'2-digit', second:'2-digit'});
+    
+    gameState.auditLog.unshift({
+        time,
+        who,
+        action,
+        details,
+        isFalse,
+        round: gameState.round
+    });
+    
+    if (gameState.auditLog.length > 20) {
+        gameState.auditLog = gameState.auditLog.slice(0, 20);
+    }
+    
+    updateAuditLog();
+}
+
+function updateAuditLog() {
+    const container = document.getElementById('auditLog');
+    
+    if (gameState.auditLog.length === 0) {
+        container.innerHTML = '<div style="color: #8888ff; font-style: italic; text-align: center; padding: 20px;">Здесь будет отображаться история всех вопросов</div>';
+        return;
+    }
+    
+    container.innerHTML = '';
+    
+    gameState.auditLog.forEach((log, index) => {
+        const item = document.createElement('div');
+        item.className = `audit-item ${log.who}`;
+        
+        const actionClass = log.isFalse ? 'audit-action false' : 'audit-action';
+        
+        item.innerHTML = `
+            <div class="audit-time">${log.time}</div>
+            <div class="audit-player">${log.who === 'player' ? '👤 Игрок' : log.who === 'bot' ? '🤖 Бот' : '⚙️ Система'}</div>
+            <div class="${actionClass}">${log.action}: ${log.details}</div>
+            <div class="audit-round">${log.round}</div>
+        `;
+        
+        container.appendChild(item);
+    });
+}
+
+function clearAuditLog() {
+    gameState.auditLog = [];
+    updateAuditLog();
+    addToAuditLog('system', 'Журнал очищен', 'Все записи удалены');
 }
 
 function setupEventListeners() {
@@ -771,23 +1085,26 @@ function playerMakeGuess() {
     const guess = input.value.trim();
     
     if (!guess) {
-        addToLog('Введите название телефона!');
+        showActionMessage('Введите название телефона!', 'player');
         return;
     }
     
     const guessedPhone = phones.find(p => p.name.toLowerCase() === guess.toLowerCase());
     
     if (!guessedPhone) {
-        addToLog(`Телефон "${guess}" не найден!`);
+        showActionMessage(`Телефон "${guess}" не найден!`, 'player');
+        addToAuditLog('player', 'Попытка угадать', `"${guess}" - не найден`);
         return;
     }
     
     if (guessedPhone.name === gameState.bot.phone.name) {
         gameState.gameActive = false;
-        addToLog(`Вы угадали телефон бота: ${guessedPhone.name}!`);
+        showActionMessage(`Вы угадали телефон бота: ${guessedPhone.name}!`, 'player');
+        addToAuditLog('player', 'Угадал телефон', guessedPhone.name);
         showResult(true);
     } else {
-        addToLog(`Неправильно! Это не ${guessedPhone.name}.`);
+        showActionMessage(`Неправильно! Это не ${guessedPhone.name}. Ход переходит боту.`, 'player');
+        addToAuditLog('player', 'Попытка угадать', `${guessedPhone.name} - неправильно`);
         input.value = '';
         input.focus();
         setPlayerTurn(false);
@@ -797,7 +1114,8 @@ function playerMakeGuess() {
 
 function endGameByRounds() {
     gameState.gameActive = false;
-    addToLog(`Лимит раундов исчерпан!`);
+    showActionMessage('Лимит раундов исчерпан!', 'player');
+    addToAuditLog('system', 'Конец игры', 'Лимит раундов исчерпан');
     
     const playerKnown = Object.keys(gameState.player.knownAttributes).length;
     const botKnown = Object.keys(gameState.bot.knownAttributes).length;
@@ -824,19 +1142,42 @@ function showResult(isWin, reason = 'guess') {
             <p>Вы угадали телефон бота: <strong>${gameState.bot.phone.name}</strong></p>
             <p>Раундов: <strong>${gameState.round}</strong></p>
             <p>Известных характеристик: <strong>${Object.keys(gameState.player.knownAttributes).length}</strong></p>
+            <p>Сложность: <strong>${gameState.bot.difficulty === 'easy' ? 'Легкий' : gameState.bot.difficulty === 'medium' ? 'Средний' : 'Сложный'}</strong></p>
         `;
+        
+        const botDetails = document.getElementById('botPhoneDetails');
+        const botPhone = gameState.bot.phone;
+        botDetails.innerHTML = `
+            <div><strong>Модель:</strong> ${botPhone.name}</div>
+            <div><strong>Процессор:</strong> ${botPhone.processor}</div>
+            <div><strong>Аккумулятор:</strong> ${botPhone.battery}</div>
+            <div><strong>Камера:</strong> ${botPhone.camera}</div>
+            <div><strong>Экран:</strong> ${botPhone.screen}</div>
+            <div><strong>Материалы:</strong> ${botPhone.materials}</div>
+            <div><strong>Зарядка:</strong> ${botPhone.charging}</div>
+            <div><strong>Цена:</strong> $${botPhone.price}</div>
+            <div><strong>Память:</strong> ${botPhone.storage}</div>
+            <div><strong>ОС:</strong> ${botPhone.os}</div>
+            <div><strong>Вес:</strong> ${botPhone.weight}</div>
+        `;
+        
         updateRecord(true);
     } else if (isWin === false) {
         title.textContent = 'БОТ ПОБЕДИЛ';
         message.innerHTML = `
             <p>Бот угадал ваш телефон: <strong>${gameState.player.phone.name}</strong></p>
             <p>Раундов: <strong>${gameState.round}</strong></p>
-            <p>Возможных телефонов: <strong>${gameState.bot.possiblePhones.length}</strong></p>
+            <p>Сложность: <strong>${gameState.bot.difficulty === 'easy' ? 'Легкий' : gameState.bot.difficulty === 'medium' ? 'Средний' : 'Сложный'}</strong></p>
         `;
     } else {
         title.textContent = 'НИЧЬЯ';
         message.innerHTML = `<p>Лимит раундов исчерпан!</p><p>Никто не смог угадать телефон.</p>`;
     }
+    
+    const handicapInfo = gameState.bot.difficulty === 'easy' ? 
+        `<br>• Пропущенных ходов: ${gameState.bot.skippedTurns}/${gameState.bot.handicap.skipTurns}<br>
+        • Неверной информации: ${gameState.bot.falseInfoGiven}/${gameState.bot.handicap.falseInfo}<br>
+        • Ограниченная память: ${gameState.bot.handicap.limitedMemory ? 'Да' : 'Нет'}` : '';
     
     analysis.innerHTML = `
         <strong>Анализ:</strong><br>
@@ -844,7 +1185,7 @@ function showResult(isWin, reason = 'guess') {
         • Телефон бота: ${gameState.bot.phone.name}<br>
         • Известных характеристик: Вы - ${Object.keys(gameState.player.knownAttributes).length}, Бот - ${Object.keys(gameState.bot.knownAttributes).length}<br>
         • Сложность: ${gameState.bot.difficulty}<br>
-        • Раундов: ${gameState.round}
+        • Раундов: ${gameState.round}${handicapInfo}
     `;
     
     modal.style.display = 'flex';
@@ -858,21 +1199,9 @@ function updateRecord(isWin) {
     }
 }
 
-function addToLog(message, type = 'player') {
-    const log = document.getElementById('gameLog');
-    const item = document.createElement('div');
-    item.className = `log-item ${type}`;
-    const time = new Date().toLocaleTimeString([], {hour: '2-digit', minute:'2-digit'});
-    const prefix = type === 'bot' ? '🤖' : '👤';
-    item.textContent = `[${time}] ${prefix} ${message}`;
-    log.appendChild(item);
-    log.scrollTop = log.scrollHeight;
-}
-
 function restartGame() {
     document.getElementById('resultModal').style.display = 'none';
     document.getElementById('playerGuess').value = '';
-    document.getElementById('gameLog').innerHTML = '';
     startNewGame();
 }
 
